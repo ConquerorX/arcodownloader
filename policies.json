@@ -1,0 +1,10 @@
+{
+  "policies": {
+    "ExtensionSettings": {
+      "arcodgrab@localhost": {
+        "installation_mode": "force_installed",
+        "url": "file:///C:/Users/noxious/Desktop/OpenCode%20-%20Proje/arcod-grab-firefox.xpi"
+      }
+    }
+  }
+}

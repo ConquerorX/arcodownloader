@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-label="ARCOD Grab — player.arcod.xyz için sayfa içi FLAC ve MP3 indirme paneli">
+  <title>ARCOD Grab</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#080b0f"/>
+      <stop offset="0.55" stop-color="#0b1310"/>
+      <stop offset="1" stop-color="#070d0a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.15" cy="0.1" r="0.95">
+      <stop offset="0" stop-color="#2f6f4f" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#2f6f4f" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#2f6f4f" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.95" cy="1" r="0.8">
+      <stop offset="0" stop-color="#3b6ea5" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#3b6ea5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d2823"/>
+      <stop offset="1" stop-color="#111815"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#34d399" stop-opacity="0"/>
+      <stop offset="0.35" stop-color="#34d399" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="round">
+      <rect width="1280" height="400" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <rect width="1280" height="400" fill="url(#bg)"/>
+    <rect width="1280" height="400" fill="url(#glow)"/>
+    <rect width="1280" height="400" fill="url(#glow2)"/>
+
+    <!-- ince ızgara -->
+    <g stroke="#ffffff" stroke-opacity="0.035" stroke-width="1">
+      <path d="M0 80h1280M0 160h1280M0 240h1280M0 320h1280"/>
+      <path d="M160 0v400M320 0v400M480 0v400M640 0v400M800 0v400M960 0v400M1120 0v400"/>
+    </g>
+
+    <!-- dalga formu -->
+    <g stroke="url(#wave)" stroke-width="3" stroke-linecap="round">
+      <path d="M980 200v0M1000 200v-14M1020 200v-34M1040 200v-58M1060 200v-26M1080 200v-74M1100 200v-44M1120 200v-92M1140 200v-60M1160 200v-30M1180 200v-48M1200 200v-16M1220 200v-6"/>
+    </g>
+
+    <!-- logo karosu -->
+    <rect x="88" y="112" width="176" height="176" rx="44" fill="url(#tile)" stroke="#ffffff" stroke-opacity="0.10"/>
+    <svg x="104" y="128" width="144" height="144" viewBox="14 18 2690 2478" preserveAspectRatio="xMidYMid meet">
+      <path fill="#ffffff" d="m17 2486.33l1229.15-2465.33 525.92 1.98 1210.39 2463.35h-518.75c-45.22 0-124.14-56.55-149.73-95.26l-226.06-443.39h-902.71l277.76-579.46h334.94l-285.65-590.95-16.84-0.97-782.65 1584.91c-25.1 52.79-109.42 125.12-168.85 125.12z"/>
+      <path fill="#34d399" d="m2680.3 1506.95l-441.24-889.49 706.73 301.8c34.39 37.9 48.35 89.66 21.76 136.19-98.04 148.79-182.18 308.06-287.25 451.5z"/>
+      <path fill="none" stroke="#34d399" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" d="m2251.31 629.62q20.42 18.37 40.84 36.73"/>
+    </svg>
+
+    <!-- kelime işareti -->
+    <g font-family="Inter, 'Segoe UI', system-ui, -apple-system, Helvetica, Arial, sans-serif">
+      <text x="308" y="196" font-size="76" font-weight="700" letter-spacing="-1.5" fill="#ffffff">ARCOD <tspan fill="#5ee0a6">Grab</tspan></text>
+      <text x="312" y="240" font-size="24" font-weight="400" fill="#9db0a7">player.arcod.xyz için sayfa içi FLAC &amp; MP3 indirme paneli</text>
+
+      <!-- rozetler -->
+      <g font-size="17" font-weight="600">
+        <g>
+          <rect x="312" y="276" width="164" height="38" rx="19" fill="#34d399" fill-opacity="0.12" stroke="#34d399" stroke-opacity="0.35"/>
+          <circle cx="335" cy="295" r="4" fill="#34d399"/>
+          <text x="350" y="301" fill="#8bf0c0">Manifest V3</text>
+        </g>
+        <g>
+          <rect x="488" y="276" width="196" height="38" rx="19" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.12"/>
+          <circle cx="511" cy="295" r="4" fill="#7dd3fc"/>
+          <text x="526" y="301" fill="#cfe6dd">24-bit · 192 kHz</text>
+        </g>
+        <g>
+          <rect x="696" y="276" width="176" height="38" rx="19" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.12"/>
+          <circle cx="719" cy="295" r="4" fill="#fbbf24"/>
+          <text x="734" y="301" fill="#cfe6dd">Sıfır telemetri</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- sürüm etiketi -->
+    <g font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+      <rect x="1140" y="36" width="96" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="1188" y="59" font-size="16" font-weight="600" fill="#b9c9c1" text-anchor="middle">v1.0.0</text>
+    </g>
+
+    <!-- coret -->
+    <rect x="0" y="1" width="1280" height="398" rx="24" fill="none" stroke="#ffffff" stroke-opacity="0.09"/>
+    <path d="M88 372h1104" stroke="url(#hair)"/>
+  </g>
+</svg>

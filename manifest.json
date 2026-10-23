@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "ARCOD Grab",
+  "version": "1.0.0",
+  "description": "player.arcod.xyz'den tek parça ya da albüm FLAC indirir, başlığı doğrular. — Emre Dural tarafından yapıldı.",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "host_permissions": [
+    "https://player.arcod.xyz/*"
+  ],
+  "permissions": [
+    "downloads"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "ARCOD Grab — paneli aç/kapat",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://player.arcod.xyz/*"],
+      "js": ["arcod-grab.js"],
+      "world": "MAIN",
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://player.arcod.xyz/*"],
+      "js": ["relay.js"],
+      "world": "ISOLATED",
+      "run_at": "document_idle"
+    }
+  ]
+}

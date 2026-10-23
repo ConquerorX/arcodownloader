@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="ARCOD Grab logosu">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1d2823"/>
+      <stop offset="1" stop-color="#101714"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="60" fill="url(#tile)"/>
+  <rect x="1" y="1" width="254" height="254" rx="59" fill="none" stroke="#ffffff" stroke-opacity="0.10"/>
+  <svg x="40" y="40" width="176" height="176" viewBox="14 18 2690 2478" preserveAspectRatio="xMidYMid meet">
+    <path fill="#ffffff" d="m17 2486.33l1229.15-2465.33 525.92 1.98 1210.39 2463.35h-518.75c-45.22 0-124.14-56.55-149.73-95.26l-226.06-443.39h-902.71l277.76-579.46h334.94l-285.65-590.95-16.84-0.97-782.65 1584.91c-25.1 52.79-109.42 125.12-168.85 125.12z"/>
+    <path fill="#34d399" d="m2680.3 1506.95l-441.24-889.49 706.73 301.8c34.39 37.9 48.35 89.66 21.76 136.19-98.04 148.79-182.18 308.06-287.25 451.5z"/>
+    <path fill="none" stroke="#34d399" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" d="m2251.31 629.62q20.42 18.37 40.84 36.73"/>
+  </svg>
+</svg>
