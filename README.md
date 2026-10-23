@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo.svg" alt="ARCOD Grab" width="180"/>
+<img src="assets/banner.svg" alt="ARCOD Grab — player.arcod.xyz için sayfa içi FLAC ve MP3 indirme paneli" width="100%"/>
 
 # 🎵 ARCOD Grab
 
