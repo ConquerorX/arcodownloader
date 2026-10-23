@@ -16,7 +16,7 @@
 [![Telemetri yok](https://img.shields.io/badge/telemetri-yok-0ea5e9)](docs/GIZLILIK.md)
 [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-yellow)](LICENSE)
 
-<sub>Emre Dural tarafından yapıldı · sürüm 1.0.0</sub>
+<sub>Emre Dural tarafından yapıldı</sub>
 
 </div>
 
