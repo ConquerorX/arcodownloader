@@ -130,16 +130,15 @@ Panel, indirme başlamadan akışın başını okur ve sana tahmin değil, dosya
 ## 🧱 Mimari
 
 ```mermaid
-flowchart LR
-    P["player.arcod.xyz<br/>sayfa"] -->|"fetch (sayfa origin'i)"| S["ARCOD API"]
-    subgraph EXT["Eklenti"]
-        A["arcod-grab.js<br/><i>MAIN world</i><br/>panel + indirme motoru"]
-        R["relay.js<br/><i>ISOLATED world</i><br/>dar boğaz köprü"]
-        B["background.js<br/><i>service worker</i><br/>downloads API"]
-        A <-->|"postMessage"| R
-        R <-->|"runtime.sendMessage"| B
-    end
-    B --> D["tarayıcı indirme yöneticisi"]
+flowchart TD
+    A["arcod-grab.js<br/>MAIN world"]
+    R["relay.js<br/>ISOLATED world"]
+    B["background.js<br/>service worker"]
+    D["indirme yöneticisi"]
+
+    A -->|postMessage| R
+    R -->|sendMessage| B
+    B -->|downloads| D
 ```
 
 Üç katmanın her biri tek bir iş yapar; hiçbiri diğerinin yetkisini genişletmez. Ayrıntılı anlatım → **[docs/MIMARI.md](docs/MIMARI.md)**
