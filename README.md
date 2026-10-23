@@ -2,87 +2,207 @@
 
 <img src="assets/banner.svg" alt="ARCOD Grab — player.arcod.xyz için sayfa içi FLAC ve MP3 indirme paneli" width="100%"/>
 
-# 🎵 ARCOD Grab
+# ARCOD Grab
 
-**player.arcod.xyz** için sayfa içi indirme paneli — tek parça ya da albüm FLAC/MP3 indirir, başlığı doğrular.
+**player.arcod.xyz** sayfasının içine yerleşen, tek parça ya da bütün albümü indiren panel.
+İndirmeden önce dosyanın **gerçek** kalitesini okur: bit derinliği, örnekleme hızı, kanal sayısı ve FLAC bütünlüğü.
 
-[![Chrome 111+](https://img.shields.io/badge/Chrome-111%2B-4285F4?logo=googlechrome&logoColor=white)](#kurulum)
-[![Firefox](https://img.shields.io/badge/Firefox-115%2B-FF7139?logo=firefox&logoColor=white)](#kurulum)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853)](#)
-[![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
+[![Chrome 111+](https://img.shields.io/badge/Chrome-111%2B-4285F4?logo=googlechrome&logoColor=white)](#-kurulum)
+[![Edge](https://img.shields.io/badge/Edge-111%2B-0078D7?logo=microsoftedge&logoColor=white)](#-kurulum)
+[![Firefox](https://img.shields.io/badge/Firefox-128%2B%20(deneysel)-FF7139?logo=firefoxbrowser&logoColor=white)](#-kurulum)
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853)](manifest.json)
+[![Bağımlılık yok](https://img.shields.io/badge/bağımlılık-yok-8b5cf6)](#-mimari)
+[![Telemetri yok](https://img.shields.io/badge/telemetri-yok-0ea5e9)](docs/GIZLILIK.md)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-yellow)](LICENSE)
 
-*Emre Dural tarafından yapıldı.*
+<sub>Emre Dural tarafından yapıldı · sürüm 1.0.0</sub>
 
 </div>
 
 ---
 
-## ✨ Özellikler
+## Neden?
 
-| | |
-|---|---|
-| 🎧 **Kalite ön ayarları** | MP3 · 320 kbps, 16-bit · 48 kHz, 24-bit · 96 kHz, **24-bit · 192 kHz Hi-Res** |
-| 💿 **Tek parça veya albüm** | Açık olan albümün parçalarını tek tek ya da topluca indir |
-| ✅ **Başlık doğrulama** | İndirilen dosyanın STREAMINFO meta verisi okunur ve parça adıyla eşleştiği doğrulanır |
-| 🏷️ **Hi-Res rozeti** | Kayıt Hi-Res ve üstüyse parça adının yanında sertifika rozeti gösterilir |
-| 📥 **Kuyruk yönetimi** | Sıralı indirme kuyruğu; araç çubuğu rozeti kuyruktaki sayıyı gösterir |
-| 🚀 **Basit kurulum** | Manifest V3, sunucu bağımlılığı yok — sadece eklentiyi yükle |
+ARCOD'un oynatıcısı akışı kendi origin'inden sunar ve tarayıcı dışı istemcileri (curl, PowerShell) **502** ile geri çevirir. Bu yüzden indirme işini sayfanın *kendi içine* taşıdık: istek, sayfanın kendi oturumu ve çerezleriyle çıkar, tarayıcının indirme yöneticisine devredilir.
 
-## 🔧 Nasıl Çalışır?
+Sonuç: ne sunucuya bir şey gönderen bir ara katman, ne de bellekte tutulan bir dosya. Sadece panel, sen ve indirme klasörün.
 
-Eklenti üç katmandan oluşur:
+## Özellikler
 
-```
-arcod-grab.js (MAIN world)  →  relay.js (ISOLATED)  →  background.js (service worker)
-      sayfa içinde                  köprü kanalı              downloads API
-```
+<table>
+<tr>
+<td width="50%" valign="top">
 
-- **`arcod-grab.js`** sayfanın kendi origin'inden istek attığı için akış normal bir sayfa isteği gibi görünür — sunucu tarayıcı dışı istemcileri (curl, PowerShell) 502 ile reddettiğinden en güvenilir yol budur.
-- **`relay.js`** MAIN world'ün `chrome.*` API'sine erişemediği yerde, sayfa ile arka plan arasında tek geçit olan dar boğaz kanalıdır.
-- **`background.js`** indirmeyi tarayıcının kendi indirme yöneticisine devreder: dosya adresi doğrudan dosya yöneticisine gider — bellekte hiçbir şey tutulmaz.
+### 🎧 Kalite tavanı
+MP3 · 320 kbps'den **24-bit · 192 kHz** Hi-Res'e kadar dört ön ayar. Sunucu, istenen tavanı kaydın gerçek çözünürlüğüyle kesiştirir — yani "en iyi" seçmek hiçbir zaman yükseltme (upscale) yapmaz.
 
-Ayrıca jeton mantığı tek kullanımlıktır: her istek için bilet oluşturulur, hemen harcanır, **hiçbir zaman ne saklanır ne günlüğe yazılır**.
+### 💿 Albüm ya da tek parça
+Albüm sayfasındaki bütün parçaları tek tuşla klasöre indir; istersen tek bir parçayı seç. Sıralı indirme kuyruğu, araç çubuğu rozetinde bekleyen sayıyı gösterir.
+
+</td>
+<td width="50%" valign="top">
+
+### ✅ Dosya doğrulama
+İndirmeden önce akışın ilk baytları okunur: `fLaC` imzası, STREAMINFO bloğu, MD5, VORBIS_COMMENT. Yeniden paketlenmiş veya etiketleri silinmiş dosyalar açıkça işaretlenir.
+
+### ♿ Kolay Mod
+Görme engelliler için daha büyük yazı, yüksek kontrast ve geniş dokunma hedefleri. Hiçbir içerik gizlenmez, sadece okunaklı hale gelir.
+
+</td>
+</tr>
+</table>
+
+- **🏷️ Hi-Res rozeti** — kayıt Hi-Res ise parça adının yanında sertifika rozeti.
+- **🎵 Şu an çalıyor kartı** — sayfanın altındaki oynatıcıyı izler; çalan parçayı tek tuşla indirir veya kuyruğa ekler.
+- **🗂️ Dosya adı şablonu** — `{n}`, `{title}`, `{artist}`, `{album}`, `{quality}`, `{isrc}` ve daha fazlası.
+- **💾 İki kayıt yolu** — doğrudan diske akıt (hedefi sen seç) veya tarayıcının indirme yöneticisine bırak.
+- **🔒 Sıfır bağımlılık** — derleme adımı yok, sunucu yok, analitik yok. Üç dosya ve bir manifest.
 
 ## 📦 Kurulum
 
-### Chrome
+### Chrome / Edge / Brave / Opera
 
-1. Repo'yu indirin: **Code → Download ZIP** (veya `git clone`)
-2. ZIP'i bir klasöre açın
-3. `chrome://extensions` adresine gidin
-4. Sağ üstten **Geliştirici Modu**'nu açın
-5. **Paketlenmemiş öğe yükle** deyin ve klasörü seçin
-6. [player.arcod.xyz](https://player.arcod.xyz/) sayfasında araç çubuğundaki 🎵 simgesine tıklayın — panel açılır!
+```text
+1.  Code ▸ Download ZIP        (ya da: git clone https://github.com/ConquerorX/arcodownloader.git)
+2.  ZIP'i bir klasöre aç
+3.  chrome://extensions  →  Geliştirici modu  →  Aç
+4.  "Paketlenmemiş öğe yükle"  →  klasörü seç
+5.  https://player.arcod.xyz/  →  araç çubuğundaki ARCOD simgesine bas
+```
 
-### Firefox
+> Edge'de `edge://extensions`, Brave'de `brave://extensions`, Opera'da `opera://extensions` adresini kullan.
 
-1. `about:debugging#/runtime/this-firefox` → **Geçici Eklenti Yükle** → `manifest.json` seçin (Firefox 115+, `world: "MAIN"` desteği)
+### Firefox (deneysel)
 
-## 🎚️ Kalite Seçimi Nasıl Çalışır?
+Firefox 128+ gerekir (`world: "MAIN"` desteği ve MV3 service worker için).
 
-Kalite ayarı bir **tavandır**: sunucu, istenen tavanı kaydın kendi çözünürlüğüyle kesiştirir.
+```text
+1.  about:debugging#/runtime/this-firefox
+2.  "Geçici Eklenti Yükle"
+3.  manifest.json dosyasını seç
+```
 
-| Ön ayar | Tavan | Örnek |
+Kalıcı kurulum ve kurumsal dağıtım için → **[docs/KURULUM.md](docs/KURULUM.md)**
+
+## 🚀 Kullanım
+
+1. ARCOD'da bir albüm aç, araç çubuğundaki simgeye bas — panel sağ üstte açılır.
+2. **İndirme kalitesi**ni seç (Ayarlar ▸ kalite tavanı). Varsayılan: `24-bit · 192 kHz`.
+3. Tek parça için satırdaki **indir**, hepsi için üstteki **albümü indir**.
+4. İndirmeden önce **dosyayı doğrula** ile akışın gerçek kalitesini gör.
+5. Sıraya attığın parçalar **Tümünü İndir** ile sırayla iner; rozet kalan sayıyı gösterir.
+
+### Kalite tavanları
+
+| Ön ayar | Tavan | CD kaydı ne alır? |
 |---|---|---|
-| MP3 · 320 kbps | 16 bit / 44.1 kHz | CD kaydı → 320 MP3 |
-| 16/48 | 16 bit / 48 kHz | CD kaydı → kaynağın kendisi |
-| 24/96 | 24 bit / 96 kHz | Hi-Res kayıt → kaynağın kendisi |
-| 24/192 | 24 bit / 192 kHz | En yüksek tavan |
+| `MP3 · 320 kbps` | 16-bit / 44.1 kHz | 320 kbps MP3 |
+| `16-bit · 48 kHz` | 16-bit / 48 kHz | Kaynağın kendisi (16/44.1) |
+| `24-bit · 96 kHz` | 24-bit / 96 kHz | Kaynağın kendisi (16/44.1) |
+| `24-bit · 192 kHz` ⭐ | 24-bit / 192 kHz | Kaynağın kendisi (16/44.1) |
 
-> Yani **"24/192" seçmek, "en yüksek kalite" demektir** — kayıt düşük çözünürlüklüyse zaten tavandan aşağı iner.
+Kalite bir **tavan**dır, hedef değil. 24/192 isteyen bir CD kaydı yine 16/44.1 gelir; hiçbir zaman yapay olarak yükseltilmez.
 
-## 🗂️ Dosya Yapısı
+### Dosya adı şablonu
 
+Varsayılan: `{n}. {title}{version} - {artist}.flac`
+
+| Jeton | Karşılığı | Jeton | Karşılığı |
+|---|---|---|---|
+| `{n}` | Sıra numarası (`01`, `02`…) | `{quality}` | `24-bit 192 kHz` |
+| `{title}` | Şarkı adı | `{qualityShort}` | `24-192` |
+| `{version}` | Sürüm / remix notu | `{isrc}` | ISRC kodu |
+| `{artist}` | Sanatçı | `{year}` | Yıl |
+| `{album}` | Albüm adı | `{label}` | Plak şirketi |
+
+## 🔍 Doğrulama neyi kontrol eder?
+
+Panel, indirme başlamadan akışın başını okur ve sana tahmin değil, dosyanın kendi beyanını gösterir:
+
+| Kontrol | Anlamı |
+|---|---|
+| `fLaC` imzası | Akış gerçekten FLAC mi? |
+| STREAMINFO | Örnekleme hızı, bit derinliği, kanal, toplam süre |
+| MD5 `00…00` | Dosya yeniden paketlenmiş — ses sağlam, ama orijinal paket değil |
+| VORBIS_COMMENT yok | Etiketler silinmiş — şarkı adı/sanatçı bilgisi kayıp |
+| Blok haritası | `PADDING`, `SEEKTABLE`, `PICTURE` gibi ek blokların varlığı |
+
+## 🧱 Mimari
+
+```mermaid
+flowchart LR
+    P["player.arcod.xyz<br/>sayfa"] -->|"fetch (sayfa origin'i)"| S["ARCOD API"]
+    subgraph EXT["Eklenti"]
+        A["arcod-grab.js<br/><i>MAIN world</i><br/>panel + indirme motoru"]
+        R["relay.js<br/><i>ISOLATED world</i><br/>dar boğaz köprü"]
+        B["background.js<br/><i>service worker</i><br/>downloads API"]
+        A <-->|"postMessage"| R
+        R <-->|"runtime.sendMessage"| B
+    end
+    B --> D["tarayıcı indirme yöneticisi"]
 ```
-arcod-grab/
-├── manifest.json      # MV3 manifesti, izinler ve içerik betikleri
-├── arcod-grab.js      # Panel + indirme motoru (MAIN world)
-├── relay.js           # MAIN ↔ background köprüsü (ISOLATED world)
-├── background.js      # downloads API, rozet, komut yönlendirme
-├── policies.json      # (İsteğe bağlı) kurumsal force-install örneği
-└── icon16/32/48/128   # Eklenti ikonları
+
+Üç katmanın her biri tek bir iş yapar; hiçbiri diğerinin yetkisini genişletmez. Ayrıntılı anlatım → **[docs/MIMARI.md](docs/MIMARI.md)**
+
+## 🔒 Gizlilik
+
+- Yalnızca `https://player.arcod.xyz/*` izni istenir; başka hiçbir site okunmaz.
+- Hiçbir veri, hiçbir sunucuya gönderilmez. Analitik, telemetri, uzak betik yok.
+- Anlık akış adresleri (ticket) yalnızca indirme anında kullanılır; diske veya günlüğe yazılmaz.
+- Ayarlar ve kuyruk `localStorage`'da, yalnızca ARCOD origin'inde tutulur.
+
+Tam metin → **[docs/GIZLILIK.md](docs/GIZLILIK.md)**
+
+## ❓ SSS
+
+<details>
+<summary><b>Panel açılmıyor / simgeye basınca bir şey olmuyor</b></summary>
+
+Sayfayı yeniledikten sonra simgeye tekrar bas. Sekme eklenti yüklenmeden önce açıldıysa bağlantı kurulamaz; eklenti sekmeyi bir kez yeniler. Hâlâ olmuyorsa `chrome://extensions` üzerinden eklentiyi yeniden yükle.
+</details>
+
+<details>
+<summary><b>İndirme 502 veriyor</b></summary>
+
+ARCOD bazı istekleri oturum/oturum açma durumuna göre reddeder. Sayfayı normal şekilde yenile, oynatıcıyı bir kez çalıştır, sonra tekrar dene.
+</details>
+
+<details>
+<summary><b>Dosya adında Türkçe karakterler bozuluyor</b></summary>
+
+Bu, işletim sisteminin dosya sistemiyle ilgilidir; şablonu `{artist} - {title}.flac` gibi sade tutmayı dene. Windows'ta `? : * | " < >` karakterleri dosya adında kullanılamaz.
+</details>
+
+<details>
+<summary><b>Firefox'ta çalışır mı?</b></summary>
+
+Çalışır ama deneyseldir: `world: "MAIN"` için Firefox 128+, doğrudan diske yazma için File System Access API gerekir (Firefox'ta yok), bu yüzden Firefox otomatik olarak tarayıcının indirme yöneticisini kullanır.
+</details>
+
+<details>
+<summary><b>Neden Chrome Web Store'da yok?</b></summary>
+
+Eklenti imzasız ve mağaza dışı dağıtılıyor; kaynak kodun tamamı bu depoda. İstersen kendin paketleyip mağazaya yükleyebilirsin.
+</details>
+
+## 🛠️ Katkı
+
+Hata bildirimi ve öneriler için **Issues** bölümünü kullan. Katkı göndermeden önce:
+
+```bash
+node --check arcod-grab.js && node --check background.js && node --check relay.js
 ```
 
-## 📄 Lisans
+Değişikliklerini `v1.0.1` gibi bir etiketle sürüm notlarına ekle → [CHANGELOG.md](CHANGELOG.md)
 
-[MIT](LICENSE) — Emre Dural
+> Eklenti tek bir dosyada (arcod-grab.js ≈ 3.400 satır) yaşıyor: panel, CSS ve indirme motoru aynı IIFE içinde. Büyük bir refactor önermeden önce bir issue aç, birlikte planlayalım.
+
+## 📄 Lisans ve yasal not
+
+[MIT](LICENSE) © 2026 Emre Dural
+
+Bu proje **ARCOD ile bağlantılı değildir**; resmî bir istemci, API ya da dağıtım kanalı değildir. Yalnızca kendi hesabınla erişme hakkına sahip olduğun içerikleri, **kişisel kullanım** için indirmeni kolaylaştırır. İndirdiğin eserlerin telif haklarına ve ARCOD'un kullanım koşullarına uymak senin sorumluluğundadır. İçerikleri yeniden dağıtmak veya paylaşmak için kullanma.
+
+<div align="center">
+<sub>ARCOD Grab · <a href="https://player.arcod.xyz/">player.arcod.xyz</a> için yapıldı</sub>
+</div>

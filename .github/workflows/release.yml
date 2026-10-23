@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Paketle ve yayınla
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Sürümü doğrula
+        run: |
+          MANIFEST=$(node -p "require('./manifest.json').version")
+          test "v$MANIFEST" = "${GITHUB_REF_NAME}" || {
+            echo "Etiket ${GITHUB_REF_NAME}, manifest v$MANIFEST — eşleşmiyor."; exit 1; }
+
+      - name: Paketle
+        run: |
+          mkdir -p dist
+          zip -q "dist/arcodownloader-${GITHUB_REF_NAME}.zip" \
+            manifest.json background.js arcod-grab.js relay.js \
+            icon16.png icon32.png icon48.png icon128.png
+          unzip -l "dist/arcodownloader-${GITHUB_REF_NAME}.zip"
+
+      - name: Yayınla
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" \
+              "dist/arcodownloader-${GITHUB_REF_NAME}.zip" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" \
+              "dist/arcodownloader-${GITHUB_REF_NAME}.zip" \
+              --title "ARCOD Grab ${GITHUB_REF_NAME}" \
+              --generate-notes
+          fi

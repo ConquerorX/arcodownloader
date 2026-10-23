@@ -1,0 +1,36 @@
+name: Özellik önerisi
+description: Panel, indirme veya doğrulama için bir fikir
+title: "[öneri] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Hangi sorunu çözüyor?
+      description: "Örnek: Her albümde dosya adı şablonunu elle değiştirmek zorunda kalıyorum çünkü…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Önerin
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Denediğin alternatifler
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Kapsam
+      options:
+        - label: Bu özellik yeni bir izin gerektiriyor olabilir (gizlilik politikasını etkiler)
+          required: false
+        - label: Arayüz değişikliği içeriyor
+          required: false

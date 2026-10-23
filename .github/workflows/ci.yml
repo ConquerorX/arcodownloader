@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Sözdizimi ve manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: manifest.json geçerli mi?
+        run: node -e "const m=require('./manifest.json'); if(!m.manifest_version||!m.version) process.exit(1); console.log('manifest', m.version)"
+
+      - name: Betikleri denetle
+        run: |
+          for f in arcod-grab.js background.js relay.js; do
+            node --check "$f"
+            echo "ok: $f"
+          done
+
+      - name: Sürüm etiketi manifest ile uyuşuyor mu?
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          MANIFEST=$(node -p "require('./manifest.json').version")
+          test "v$MANIFEST" = "${GITHUB_REF_NAME}" || {
+            echo "Etiket ${GITHUB_REF_NAME}, manifest v$MANIFEST — eşleşmiyor."; exit 1; }

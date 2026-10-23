@@ -1,0 +1,71 @@
+name: Hata bildirimi
+description: Panel, indirme veya doğrulama ile ilgili bir sorun
+title: "[hata] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Teşekkürler! Lütfen aşağıdaki alanları doldur — özellikle konsol çıktısı sorunu saniyeler içinde bulmamızı sağlıyor.
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Tarayıcı
+      options:
+        - Chrome
+        - Edge
+        - Brave
+        - Opera
+        - Vivaldi
+        - Firefox
+        - Diğer
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Sürümler
+      description: Tarayıcı sürümü ve eklenti sürümü (manifest.json)
+      placeholder: "Chrome 141.0.7390.55 · ARCOD Grab 1.0.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: Ne oldu?
+      description: Ne bekliyordun, ne oldu?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Yeniden üretme adımları
+      placeholder: |
+        1. Albüm sayfasını aç
+        2. Panelden "albümü indir"e bas
+        3. …
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Konsol çıktısı
+      description: ARCOD sekmesinde F12 ▸ Console ve service worker konsolu
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Kontrol listesi
+      options:
+        - label: Sayfayı yenileyip tekrar denedim
+          required: true
+        - label: Eklentiyi uzantılar sayfasından yeniden yükledim
+          required: true

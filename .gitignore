@@ -1,0 +1,19 @@
+# Yerel geliştirme dosyaları
+policies.json
+*.xpi
+*.zip
+*.crx
+*.pem
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editör
+.vscode/
+.idea/
+*.swp
+
+# Yerel araç çıktıları
+.openchamber/

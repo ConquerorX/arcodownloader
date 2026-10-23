@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Kurulum ve sorun giderme
+    url: https://github.com/ConquerorX/arcodownloader/blob/main/docs/KURULUM.md
+    about: '"manifest bulunamadı", 502, dosya adı ve benzeri sorular için önce buraya bak.'
+  - name: Gizlilik
+    url: https://github.com/ConquerorX/arcodownloader/blob/main/docs/GIZLILIK.md
+    about: 'Hangi verilerin işlendiği (kısa cevap: hiçbiri).'
