@@ -7,6 +7,7 @@
 **player.arcod.xyz** sayfasının içine yerleşen, tek parça ya da bütün albümü indiren panel.
 İndirmeden önce dosyanın **gerçek** kalitesini okur: bit derinliği, örnekleme hızı, kanal sayısı ve FLAC bütünlüğü.
 
+[![Sürüm](https://img.shields.io/github/v/release/ConquerorX/arcodownloader?label=s%C3%BCr%C3%BCm&color=2f8f6b)](https://github.com/ConquerorX/arcodownloader/releases/latest)
 [![Chrome 111+](https://img.shields.io/badge/Chrome-111%2B-4285F4?logo=googlechrome&logoColor=white)](#-kurulum)
 [![Edge](https://img.shields.io/badge/Edge-111%2B-0078D7?logo=microsoftedge&logoColor=white)](#-kurulum)
 [![Firefox](https://img.shields.io/badge/Firefox-128%2B%20(deneysel)-FF7139?logo=firefoxbrowser&logoColor=white)](#-kurulum)
