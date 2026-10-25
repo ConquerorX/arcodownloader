@@ -126,13 +126,12 @@ const API = '/api/player';
    * HTML icerir (th() ile okunur: parametreler kacislanir).
    * Yeni dil eklemek icin bkz. README "Diller". */
   const LANGS = [
-    { id: 'tr', name: 'Türkçe', dir: 'ltr' },
-    { id: 'en', name: 'English', dir: 'ltr' },
-    { id: 'de', name: 'Deutsch', dir: 'ltr' },
-    { id: 'fr', name: 'Français', dir: 'ltr' },
-    { id: 'es', name: 'Español', dir: 'ltr' },
-    { id: 'ru', name: 'Русский', dir: 'ltr' },
-    { id: 'ar', name: 'العربية', dir: 'rtl' },
+    { id: 'tr', name: 'Türkçe' },
+    { id: 'en', name: 'English' },
+    { id: 'de', name: 'Deutsch' },
+    { id: 'fr', name: 'Français' },
+    { id: 'es', name: 'Español' },
+    { id: 'ru', name: 'Русский' },
   ];
 
   const I18N = {
@@ -195,8 +194,19 @@ const API = '/api/player';
       qualSet: 'kalite tavanı: {q}',
       qHighest: 'en yüksek',
       gFile: 'dosya adı',
-      tplLabel: 'şablon',
+      tplLabel: 'şablon metni (gelişmiş)',
       tplExample: 'örnek',
+      tplBlocks: 'blok sırası',
+      tplBlocksHint: 'Blokları sürükleyip bırakarak sırala; bir bloğa basınca kaldırılır. Klavyede bloğa odaklanıp ← → ile taşı. Bloklar arasındaki ayırıcıları elle yazabilirsin.',
+      tplPool: 'eklenebilir bloklar',
+      tplPoolAria: '{name}: eklemek veya kaldırmak için bas',
+      tplChipAria: '{name}: sürükleyerek veya ← → ile taşı, Enter ile kaldır',
+      tplSepAria: 'ayırıcı {n}',
+      tplExtAria: 'dosya uzantısı',
+      tplEmpty: 'Blok yok. Aşağıdan bir blok ekle.',
+      tplMoved: '{name} {pos}. sıraya taşındı',
+      tplAdded: '{name} eklendi',
+      tplRemoved: '{name} kaldırıldı',
       ph_n: 'Sıra numarası (01, 02…)',
       ph_title: 'Şarkı adı',
       ph_version: 'Sürüm / remix notu',
@@ -208,15 +218,12 @@ const API = '/api/player';
       ph_year: 'Yıl',
       ph_label: 'Plak şirketi',
       gSave: 'nasıl kaydedilsin',
-      smodeAuto: 'otomatik — bu tarayıcıda {how}',
-      smodeAutoFsa: 'doğrudan diske',
-      smodeAutoDl: 'tarayıcı indirmesi',
-      smodeDl: 'tarayıcı indirmesi (doğrudan diske yazmaz)',
-      smodeFsa: 'doğrudan diske (hedef seç, kayma yok)',
-      smodeHintFsaH: 'FSA = doğrudan diske akıtır, <b>kayma olmaz</b>, ama her seferinde hedef seçersin.',
-      smodeHintDlH: 'Bu tarayıcı File System Access API desteklemiyor (Firefox). '
-        + 'İndirmeler tarayıcının kendi yöneticisine devredilir: <b>kayma yok, bellek şişmez</b>, '
-        + 'Aç düğmesi dosyayı sistemde açar.',
+      saveDlTitle: 'tarayıcı indirmeleri',
+      saveDlDesc: 'Dosyalar, tarayıcının İndirilenler klasörüne sormadan iner. Albüm ve sıra, içinde kendi alt klasörüne konur. Her tarayıcıda çalışır.',
+      saveFsaTitle: 'klasör seç',
+      saveFsaDesc: 'Her indirmede kaydedilecek yeri sen seçersin: tek parçada dosya, albümde bir klasör. Veri doğrudan seçtiğin yere yazılır.',
+      saveFsaOff: 'Bu tarayıcı yer seçmeyi desteklemiyor (örneğin Firefox); tarayıcı indirmeleri kullanılır.',
+      saveQueueNote: 'Sıradaki parçalar (Tümünü İndir) her zaman tarayıcı indirmeleriyle iner; aksi halde her dosya için ayrı bir seçim penceresi açılırdı.',
       gAbout: 'hakkında',
       aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>ARCOD’un sayfası içinde çalışan bir indirme yardımcısıdır. '
         + 'Hiçbir veri sunucuya gönderilmez.',
@@ -312,6 +319,18 @@ const API = '/api/player';
         + 'Kutuya tıkla, sonra tuş kombinasyonuna bas. '
         + '<b>Esc</b> vazgeçer, <b>Backspace</b> kısayolu boşaltır.',
       scReset: 'varsayılana dön',
+      scScopeLabel: 'kısayol kapsamı',
+      scScopePage: 'yalnızca ARCOD sayfasında',
+      scScopePageDesc: 'Tuşlar yalnızca player.arcod.xyz sekmesi öndeyken çalışır. Aşağıda atadığın özel tuşlar bu kapsamda geçerlidir.',
+      scScopeGlobal: 'tüm tarayıcıda (global)',
+      scScopeGlobalDesc: 'Başka bir sekmedeyken de çalışır. Tuşları Chrome’un kısayol sayfasından atarsın; paneldeki özel tuşlar burada geçmez.',
+      scGlobalHelpH: 'Chrome en fazla 4 eklenti komutuna izin verir (önceki, sonraki, ses artır, ses kıs). Tuşları <b>chrome://extensions/shortcuts</b> sayfasında ARCOD Grab için ata. Açık bir ARCOD sekmesi yoksa komutlar sessizce yok sayılır.',
+      scOpenChrome: 'kısayol ayarlarını aç',
+      scCopyAddr: 'adresi kopyala',
+      scCopied: 'adres kopyalandı',
+      scCopyFail: 'kopyalanamadı; adresi elle yaz: chrome://extensions/shortcuts',
+      scCmdListTitle: 'Chrome’da atanan tuşlar',
+      scPageOnlyH: 'Paneldeki özel tuşlar yalnızca <b>ARCOD sayfasında</b> çalışır.',
       scPrev: 'Önceki parça',
       scNext: 'Sonraki parça',
       scVolUp: 'Sesi artır',
@@ -391,8 +410,19 @@ const API = '/api/player';
       qualSet: 'quality ceiling: {q}',
       qHighest: 'highest',
       gFile: 'file name',
-      tplLabel: 'template',
+      tplLabel: 'template text (advanced)',
       tplExample: 'preview',
+      tplBlocks: 'block order',
+      tplBlocksHint: 'Drag blocks to reorder them; press a block to remove it. With the keyboard, focus a block and use ← → to move it. You can type the separators between blocks yourself.',
+      tplPool: 'available blocks',
+      tplPoolAria: '{name}: press to add or remove',
+      tplChipAria: '{name}: drag or use ← → to move, Enter to remove',
+      tplSepAria: 'separator {n}',
+      tplExtAria: 'file extension',
+      tplEmpty: 'No blocks. Add one below.',
+      tplMoved: '{name} moved to position {pos}',
+      tplAdded: '{name} added',
+      tplRemoved: '{name} removed',
       ph_n: 'Track number (01, 02…)',
       ph_title: 'Song title',
       ph_version: 'Version / remix note',
@@ -404,15 +434,12 @@ const API = '/api/player';
       ph_year: 'Year',
       ph_label: 'Record label',
       gSave: 'how to save',
-      smodeAuto: 'automatic — {how} in this browser',
-      smodeAutoFsa: 'straight to disk',
-      smodeAutoDl: 'browser download',
-      smodeDl: 'browser download (does not write straight to disk)',
-      smodeFsa: 'straight to disk (pick a target)',
-      smodeHintFsaH: 'FSA = streams straight to disk and <b>files land where you pick</b>, but you choose a target every time.',
-      smodeHintDlH: 'This browser does not support the File System Access API (Firefox). '
-        + 'Downloads are handed to the browser’s own manager: <b>no misplaced files, no memory bloat</b>, '
-        + 'and the Open button opens the file in your system.',
+      saveDlTitle: 'browser downloads',
+      saveDlDesc: 'Files go to your browser’s Downloads folder without asking. Albums and the queue get their own subfolder. Works in every browser.',
+      saveFsaTitle: 'choose a folder',
+      saveFsaDesc: 'You pick where to save each time: a file for a single track, a folder for an album. Data is written straight to the place you chose.',
+      saveFsaOff: 'This browser cannot pick a save location (for example Firefox); browser downloads are used.',
+      saveQueueNote: 'Queued tracks (Download all) always use browser downloads; otherwise a separate dialog would open for every file.',
       gAbout: 'about',
       aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>A download helper that runs inside the ARCOD page. '
         + 'No data is sent to any server.',
@@ -508,6 +535,18 @@ const API = '/api/player';
         + 'Click the box, then press the key combination. '
         + '<b>Esc</b> cancels, <b>Backspace</b> clears the shortcut.',
       scReset: 'reset to defaults',
+      scScopeLabel: 'shortcut scope',
+      scScopePage: 'on the ARCOD page only',
+      scScopePageDesc: 'Keys work only while the player.arcod.xyz tab is in front. The custom keys you set below apply to this scope.',
+      scScopeGlobal: 'whole browser (global)',
+      scScopeGlobalDesc: 'Also works while you are on another tab. You assign the keys on Chrome’s shortcuts page; the custom keys in the panel do not apply here.',
+      scGlobalHelpH: 'Chrome allows at most 4 commands per extension (previous, next, volume up, volume down). Assign the keys for ARCOD Grab on <b>chrome://extensions/shortcuts</b>. If no ARCOD tab is open, the commands are silently ignored.',
+      scOpenChrome: 'open shortcut settings',
+      scCopyAddr: 'copy address',
+      scCopied: 'address copied',
+      scCopyFail: 'could not copy; type the address yourself: chrome://extensions/shortcuts',
+      scCmdListTitle: 'Keys assigned in Chrome',
+      scPageOnlyH: 'Custom keys in the panel work on the <b>ARCOD page</b> only.',
       scPrev: 'Previous track',
       scNext: 'Next track',
       scVolUp: 'Volume up',
@@ -587,8 +626,19 @@ const API = '/api/player';
       qualSet: 'Qualitätsgrenze: {q}',
       qHighest: 'höchste',
       gFile: 'Dateiname',
-      tplLabel: 'Vorlage',
+      tplLabel: 'Vorlagentext (erweitert)',
       tplExample: 'Vorschau',
+      tplBlocks: 'Reihenfolge der Blöcke',
+      tplBlocksHint: 'Blöcke per Drag-and-drop umsortieren; Antippen entfernt einen Block. Mit der Tastatur einen Block fokussieren und mit ← → verschieben. Die Trennzeichen zwischen den Blöcken kannst du selbst eintippen.',
+      tplPool: 'verfügbare Blöcke',
+      tplPoolAria: '{name}: drücken zum Hinzufügen oder Entfernen',
+      tplChipAria: '{name}: ziehen oder mit ← → verschieben, Enter entfernt',
+      tplSepAria: 'Trennzeichen {n}',
+      tplExtAria: 'Dateiendung',
+      tplEmpty: 'Keine Blöcke. Füge unten einen hinzu.',
+      tplMoved: '{name} auf Position {pos} verschoben',
+      tplAdded: '{name} hinzugefügt',
+      tplRemoved: '{name} entfernt',
       ph_n: 'Titelnummer (01, 02…)',
       ph_title: 'Songtitel',
       ph_version: 'Version / Remix-Hinweis',
@@ -600,15 +650,12 @@ const API = '/api/player';
       ph_year: 'Jahr',
       ph_label: 'Plattenlabel',
       gSave: 'Speichern',
-      smodeAuto: 'Automatisch — in diesem Browser: {how}',
-      smodeAutoFsa: 'direkt auf den Datenträger',
-      smodeAutoDl: 'Browser-Download',
-      smodeDl: 'Browser-Download (schreibt nicht direkt auf den Datenträger)',
-      smodeFsa: 'direkt auf den Datenträger (Ziel wählen)',
-      smodeHintFsaH: 'FSA = streamt direkt auf den Datenträger, <b>Dateien landen am gewählten Ort</b>, aber du wählst jedes Mal ein Ziel.',
-      smodeHintDlH: 'Dieser Browser unterstützt die File System Access API nicht (Firefox). '
-        + 'Downloads gehen an den Download-Manager des Browsers: <b>nichts landet am falschen Ort, kein Speicher-Aufblähen</b>; '
-        + '„Öffnen“ öffnet die Datei im System.',
+      saveDlTitle: 'Browser-Downloads',
+      saveDlDesc: 'Dateien landen ohne Rückfrage im Download-Ordner des Browsers. Alben und die Warteschlange bekommen einen eigenen Unterordner. Funktioniert in jedem Browser.',
+      saveFsaTitle: 'Ordner wählen',
+      saveFsaDesc: 'Du wählst jedes Mal den Speicherort: bei einem Titel eine Datei, bei einem Album einen Ordner. Die Daten werden direkt dorthin geschrieben.',
+      saveFsaOff: 'Dieser Browser kann keinen Speicherort wählen (z. B. Firefox); es werden Browser-Downloads verwendet.',
+      saveQueueNote: 'Titel aus der Warteschlange (Alle herunterladen) nutzen immer Browser-Downloads; sonst würde für jede Datei ein eigener Dialog erscheinen.',
       gAbout: 'Über',
       aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>Ein Download-Helfer, der direkt in der ARCOD-Seite läuft. '
         + 'Es werden keine Daten an einen Server gesendet.',
@@ -704,6 +751,18 @@ const API = '/api/player';
         + 'Klicke das Feld und drücke die Tastenkombination. '
         + '<b>Esc</b> bricht ab, <b>Rücktaste</b> leert das Kürzel.',
       scReset: 'Standard wiederherstellen',
+      scScopeLabel: 'Geltungsbereich der Kürzel',
+      scScopePage: 'nur auf der ARCOD-Seite',
+      scScopePageDesc: 'Die Tasten funktionieren nur, solange der Tab player.arcod.xyz vorn ist. Die unten festgelegten eigenen Tasten gelten in diesem Bereich.',
+      scScopeGlobal: 'im ganzen Browser (global)',
+      scScopeGlobalDesc: 'Funktioniert auch in anderen Tabs. Die Tasten legst du auf der Kürzel-Seite von Chrome fest; die eigenen Tasten aus dem Panel gelten hier nicht.',
+      scGlobalHelpH: 'Chrome erlaubt höchstens 4 Befehle pro Erweiterung (zurück, weiter, lauter, leiser). Lege die Tasten für ARCOD Grab auf <b>chrome://extensions/shortcuts</b> fest. Ist kein ARCOD-Tab geöffnet, werden die Befehle stillschweigend ignoriert.',
+      scOpenChrome: 'Kürzel-Einstellungen öffnen',
+      scCopyAddr: 'Adresse kopieren',
+      scCopied: 'Adresse kopiert',
+      scCopyFail: 'Kopieren fehlgeschlagen; gib die Adresse selbst ein: chrome://extensions/shortcuts',
+      scCmdListTitle: 'In Chrome belegte Tasten',
+      scPageOnlyH: 'Eigene Tasten im Panel gelten nur auf der <b>ARCOD-Seite</b>.',
       scPrev: 'Vorheriger Titel',
       scNext: 'Nächster Titel',
       scVolUp: 'Lauter',
@@ -783,8 +842,19 @@ const API = '/api/player';
       qualSet: 'plafond de qualité : {q}',
       qHighest: 'maximum',
       gFile: 'nom du fichier',
-      tplLabel: 'modèle',
+      tplLabel: 'texte du modèle (avancé)',
       tplExample: 'aperçu',
+      tplBlocks: 'ordre des blocs',
+      tplBlocksHint: 'Faites glisser les blocs pour les réordonner ; appuyer sur un bloc le retire. Au clavier, placez le focus sur un bloc et déplacez-le avec ← →. Vous pouvez saisir vous-même les séparateurs entre les blocs.',
+      tplPool: 'blocs disponibles',
+      tplPoolAria: '{name} : appuyer pour ajouter ou retirer',
+      tplChipAria: '{name} : glisser ou ← → pour déplacer, Entrée pour retirer',
+      tplSepAria: 'séparateur {n}',
+      tplExtAria: 'extension du fichier',
+      tplEmpty: 'Aucun bloc. Ajoutez-en un ci-dessous.',
+      tplMoved: '{name} déplacé en position {pos}',
+      tplAdded: '{name} ajouté',
+      tplRemoved: '{name} retiré',
       ph_n: 'Numéro de piste (01, 02…)',
       ph_title: 'Titre du morceau',
       ph_version: 'Version / note de remix',
@@ -796,15 +866,12 @@ const API = '/api/player';
       ph_year: 'Année',
       ph_label: 'Label',
       gSave: 'enregistrement',
-      smodeAuto: 'automatique — dans ce navigateur : {how}',
-      smodeAutoFsa: 'directement sur le disque',
-      smodeAutoDl: 'téléchargement du navigateur',
-      smodeDl: 'téléchargement du navigateur (n’écrit pas directement sur le disque)',
-      smodeFsa: 'directement sur le disque (choix de la destination)',
-      smodeHintFsaH: 'FSA = écrit directement sur le disque, <b>les fichiers vont où vous le choisissez</b>, mais vous choisissez la destination à chaque fois.',
-      smodeHintDlH: 'Ce navigateur ne prend pas en charge l’API File System Access (Firefox). '
-        + 'Les téléchargements sont confiés au gestionnaire du navigateur : <b>aucun fichier égaré, pas de mémoire gonflée</b> ; '
-        + 'le bouton Ouvrir ouvre le fichier dans le système.',
+      saveDlTitle: 'téléchargements du navigateur',
+      saveDlDesc: 'Les fichiers vont dans le dossier Téléchargements du navigateur, sans demander. Les albums et la file ont leur propre sous-dossier. Fonctionne dans tous les navigateurs.',
+      saveFsaTitle: 'choisir un dossier',
+      saveFsaDesc: 'Vous choisissez l’emplacement à chaque fois : un fichier pour un titre, un dossier pour un album. Les données sont écrites directement à l’endroit choisi.',
+      saveFsaOff: 'Ce navigateur ne permet pas de choisir l’emplacement (par exemple Firefox) ; les téléchargements du navigateur sont utilisés.',
+      saveQueueNote: 'Les titres de la file (Tout télécharger) passent toujours par les téléchargements du navigateur ; sinon une fenêtre de choix s’ouvrirait pour chaque fichier.',
       gAbout: 'à propos',
       aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>Un assistant de téléchargement qui fonctionne dans la page ARCOD. '
         + 'Aucune donnée n’est envoyée à un serveur.',
@@ -900,6 +967,18 @@ const API = '/api/player';
         + 'Cliquez sur la case, puis appuyez sur la combinaison de touches. '
         + '<b>Échap</b> annule, <b>Retour arrière</b> vide le raccourci.',
       scReset: 'rétablir les valeurs par défaut',
+      scScopeLabel: 'portée des raccourcis',
+      scScopePage: 'uniquement sur la page ARCOD',
+      scScopePageDesc: 'Les touches ne fonctionnent que lorsque l’onglet player.arcod.xyz est au premier plan. Les touches personnalisées définies ci-dessous s’appliquent à cette portée.',
+      scScopeGlobal: 'dans tout le navigateur (global)',
+      scScopeGlobalDesc: 'Fonctionne aussi depuis un autre onglet. Vous attribuez les touches dans la page des raccourcis de Chrome ; les touches personnalisées du panneau ne s’appliquent pas ici.',
+      scGlobalHelpH: 'Chrome autorise au plus 4 commandes par extension (précédent, suivant, volume +, volume −). Attribuez les touches d’ARCOD Grab sur <b>chrome://extensions/shortcuts</b>. Sans onglet ARCOD ouvert, les commandes sont ignorées sans bruit.',
+      scOpenChrome: 'ouvrir les réglages des raccourcis',
+      scCopyAddr: 'copier l’adresse',
+      scCopied: 'adresse copiée',
+      scCopyFail: 'copie impossible ; saisissez l’adresse vous-même : chrome://extensions/shortcuts',
+      scCmdListTitle: 'Touches attribuées dans Chrome',
+      scPageOnlyH: 'Les touches personnalisées du panneau ne fonctionnent que sur la <b>page ARCOD</b>.',
       scPrev: 'Titre précédent',
       scNext: 'Titre suivant',
       scVolUp: 'Volume +',
@@ -979,8 +1058,19 @@ const API = '/api/player';
       qualSet: 'límite de calidad: {q}',
       qHighest: 'máxima',
       gFile: 'nombre de archivo',
-      tplLabel: 'plantilla',
+      tplLabel: 'texto de la plantilla (avanzado)',
       tplExample: 'vista previa',
+      tplBlocks: 'orden de los bloques',
+      tplBlocksHint: 'Arrastra los bloques para reordenarlos; al pulsar un bloque se quita. Con el teclado, enfoca un bloque y muévelo con ← →. Puedes escribir tú mismo los separadores entre bloques.',
+      tplPool: 'bloques disponibles',
+      tplPoolAria: '{name}: pulsa para añadir o quitar',
+      tplChipAria: '{name}: arrastra o usa ← → para mover, Intro para quitar',
+      tplSepAria: 'separador {n}',
+      tplExtAria: 'extensión del archivo',
+      tplEmpty: 'Sin bloques. Añade uno abajo.',
+      tplMoved: '{name} movido a la posición {pos}',
+      tplAdded: '{name} añadido',
+      tplRemoved: '{name} quitado',
       ph_n: 'Número de pista (01, 02…)',
       ph_title: 'Título de la canción',
       ph_version: 'Versión / nota de remix',
@@ -992,15 +1082,12 @@ const API = '/api/player';
       ph_year: 'Año',
       ph_label: 'Sello discográfico',
       gSave: 'cómo guardar',
-      smodeAuto: 'automático — en este navegador: {how}',
-      smodeAutoFsa: 'directo al disco',
-      smodeAutoDl: 'descarga del navegador',
-      smodeDl: 'descarga del navegador (no escribe directo al disco)',
-      smodeFsa: 'directo al disco (elige el destino)',
-      smodeHintFsaH: 'FSA = escribe directo al disco, <b>los archivos quedan donde eliges</b>, pero eliges el destino cada vez.',
-      smodeHintDlH: 'Este navegador no admite la File System Access API (Firefox). '
-        + 'Las descargas pasan al gestor del navegador: <b>sin archivos mal ubicados ni memoria inflada</b>; '
-        + 'el botón Abrir abre el archivo en el sistema.',
+      saveDlTitle: 'descargas del navegador',
+      saveDlDesc: 'Los archivos van a la carpeta Descargas del navegador sin preguntar. Los álbumes y la cola tienen su propia subcarpeta. Funciona en cualquier navegador.',
+      saveFsaTitle: 'elegir una carpeta',
+      saveFsaDesc: 'Eliges dónde guardar cada vez: un archivo para una pista, una carpeta para un álbum. Los datos se escriben directamente donde elijas.',
+      saveFsaOff: 'Este navegador no puede elegir la ubicación (por ejemplo Firefox); se usan las descargas del navegador.',
+      saveQueueNote: 'Las pistas de la cola (Descargar todo) siempre usan las descargas del navegador; si no, se abriría un cuadro de selección por cada archivo.',
       gAbout: 'acerca de',
       aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>Un ayudante de descarga que funciona dentro de la página de ARCOD. '
         + 'No se envía ningún dato a ningún servidor.',
@@ -1096,6 +1183,18 @@ const API = '/api/player';
         + 'Haz clic en la casilla y pulsa la combinación de teclas. '
         + '<b>Esc</b> cancela, <b>Retroceso</b> vacía el atajo.',
       scReset: 'restablecer valores',
+      scScopeLabel: 'alcance de los atajos',
+      scScopePage: 'solo en la página de ARCOD',
+      scScopePageDesc: 'Las teclas solo funcionan mientras la pestaña player.arcod.xyz está al frente. Las teclas personalizadas que defines abajo valen en este alcance.',
+      scScopeGlobal: 'en todo el navegador (global)',
+      scScopeGlobalDesc: 'También funciona desde otra pestaña. Las teclas se asignan en la página de atajos de Chrome; las teclas personalizadas del panel no valen aquí.',
+      scGlobalHelpH: 'Chrome permite como máximo 4 comandos por extensión (anterior, siguiente, subir y bajar volumen). Asigna las teclas de ARCOD Grab en <b>chrome://extensions/shortcuts</b>. Si no hay ninguna pestaña de ARCOD abierta, los comandos se ignoran en silencio.',
+      scOpenChrome: 'abrir ajustes de atajos',
+      scCopyAddr: 'copiar dirección',
+      scCopied: 'dirección copiada',
+      scCopyFail: 'no se pudo copiar; escribe la dirección tú mismo: chrome://extensions/shortcuts',
+      scCmdListTitle: 'Teclas asignadas en Chrome',
+      scPageOnlyH: 'Las teclas personalizadas del panel solo funcionan en la <b>página de ARCOD</b>.',
       scPrev: 'Pista anterior',
       scNext: 'Pista siguiente',
       scVolUp: 'Subir volumen',
@@ -1175,8 +1274,19 @@ const API = '/api/player';
       qualSet: 'потолок качества: {q}',
       qHighest: 'максимум',
       gFile: 'имя файла',
-      tplLabel: 'шаблон',
+      tplLabel: 'текст шаблона (дополнительно)',
       tplExample: 'пример',
+      tplBlocks: 'порядок блоков',
+      tplBlocksHint: 'Перетаскивайте блоки, чтобы изменить порядок; нажатие на блок убирает его. С клавиатуры сфокусируйте блок и двигайте его клавишами ← →. Разделители между блоками можно вводить вручную.',
+      tplPool: 'доступные блоки',
+      tplPoolAria: '{name}: нажмите, чтобы добавить или убрать',
+      tplChipAria: '{name}: перетащите или двигайте клавишами ← →, Enter — убрать',
+      tplSepAria: 'разделитель {n}',
+      tplExtAria: 'расширение файла',
+      tplEmpty: 'Блоков нет. Добавьте блок ниже.',
+      tplMoved: '{name}: перемещён на позицию {pos}',
+      tplAdded: '{name}: добавлен',
+      tplRemoved: '{name}: убран',
       ph_n: 'Номер трека (01, 02…)',
       ph_title: 'Название песни',
       ph_version: 'Версия / пометка ремикса',
@@ -1188,15 +1298,12 @@ const API = '/api/player';
       ph_year: 'Год',
       ph_label: 'Лейбл',
       gSave: 'как сохранять',
-      smodeAuto: 'авто — в этом браузере: {how}',
-      smodeAutoFsa: 'прямо на диск',
-      smodeAutoDl: 'загрузка браузера',
-      smodeDl: 'загрузка браузера (без записи прямо на диск)',
-      smodeFsa: 'прямо на диск (выбор папки)',
-      smodeHintFsaH: 'FSA — запись потоком прямо на диск, <b>файлы попадают туда, куда вы выбрали</b>, но место нужно выбирать каждый раз.',
-      smodeHintDlH: 'Этот браузер не поддерживает File System Access API (Firefox). '
-        + 'Загрузки передаются встроенному менеджеру браузера: <b>файлы не теряются, память не раздувается</b>, '
-        + 'а кнопка «Открыть» открывает файл в системе.',
+      saveDlTitle: 'загрузки браузера',
+      saveDlDesc: 'Файлы попадают в папку «Загрузки» браузера без вопросов. Альбомы и очередь кладутся в отдельную подпапку. Работает в любом браузере.',
+      saveFsaTitle: 'выбрать папку',
+      saveFsaDesc: 'Место сохранения вы выбираете каждый раз: файл для одного трека, папку для альбома. Данные пишутся прямо в выбранное место.',
+      saveFsaOff: 'Этот браузер не умеет выбирать место сохранения (например, Firefox); используются загрузки браузера.',
+      saveQueueNote: 'Треки из очереди («Скачать все») всегда загружаются средствами браузера; иначе для каждого файла открывалось бы отдельное окно выбора.',
       gAbout: 'о программе',
       aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>Помощник для скачивания, работающий прямо на странице ARCOD. '
         + 'Никакие данные не отправляются на сервер.',
@@ -1292,6 +1399,18 @@ const API = '/api/player';
         + 'Щёлкните по полю и нажмите сочетание клавиш. '
         + '<b>Esc</b> — отмена, <b>Backspace</b> — очистить.',
       scReset: 'сбросить',
+      scScopeLabel: 'область действия горячих клавиш',
+      scScopePage: 'только на странице ARCOD',
+      scScopePageDesc: 'Клавиши работают, только пока вкладка player.arcod.xyz активна. Заданные ниже свои клавиши действуют в этой области.',
+      scScopeGlobal: 'во всём браузере (глобально)',
+      scScopeGlobalDesc: 'Работает и на других вкладках. Клавиши назначаются на странице горячих клавиш Chrome; свои клавиши из панели здесь не действуют.',
+      scGlobalHelpH: 'Chrome разрешает не более 4 команд на расширение (предыдущий, следующий, громче, тише). Назначьте клавиши для ARCOD Grab на странице <b>chrome://extensions/shortcuts</b>. Если вкладка ARCOD не открыта, команды молча игнорируются.',
+      scOpenChrome: 'открыть настройки горячих клавиш',
+      scCopyAddr: 'скопировать адрес',
+      scCopied: 'адрес скопирован',
+      scCopyFail: 'не удалось скопировать; введите адрес вручную: chrome://extensions/shortcuts',
+      scCmdListTitle: 'Клавиши, назначенные в Chrome',
+      scPageOnlyH: 'Свои клавиши из панели работают только на <b>странице ARCOD</b>.',
       scPrev: 'Предыдущий трек',
       scNext: 'Следующий трек',
       scVolUp: 'Громче',
@@ -1311,205 +1430,23 @@ const API = '/api/player';
       albumReadFail: '✗ не удалось прочитать альбом: {e}',
       dec: ',',
     },
-
-    ar: {
-      gripLabel: 'عرض اللوحة',
-      gripTip: 'اسحب · اضبط بالمفتاحين ← → · نقر مزدوج: الافتراضي',
-      barQueueAll: 'تنزيل الكل',
-      barQueueAllTip: 'تنزيل جميع المقاطع في قائمة الانتظار',
-      barAlbum: 'تنزيل الألبوم',
-      barAlbumTip: 'تنزيل جميع مقاطع الألبوم إلى مجلد',
-      stop: 'إيقاف',
-      resume: 'استئناف',
-      settings: 'الإعدادات',
-      foldClose: 'طيّ اللوحة',
-      foldOpen: 'فتح اللوحة',
-      npLabel: 'قيد التشغيل الآن',
-      dl: 'تنزيل',
-      npQueueAdd: 'إضافة للقائمة',
-      npQueued: 'تمت الإضافة',
-      loading: 'جارٍ التحميل…',
-      qEmpty: 'القائمة فارغة',
-      qClear: 'مسح',
-      qCleared: 'تم مسح القائمة',
-      qCount: '{n} في القائمة',
-      qTitleless: '(بلا عنوان)',
-      qRemove: 'إزالة',
-      qRemoveTip: 'إزالة من القائمة',
-      qBtnTip: '{n} مقطع · بأعلى جودة (quality 27)',
-      back: 'رجوع',
-      settingsTitle: 'الإعدادات',
-      gLang: 'اللغة',
-      langLabel: 'لغة الواجهة',
-      langAuto: 'تلقائي (لغة المتصفح)',
-      langHint: 'تُطبَّق التغييرات فورًا.',
-      gAppearance: 'المظهر',
-      easyName: 'الوضع السهل',
-      easyDesc: 'لضعاف البصر: خط أكبر وتباين عالٍ وأزرار كبيرة. لا يُخفى أي محتوى.',
-      npName: 'بطاقة «قيد التشغيل الآن»',
-      npDesc: 'تراقب المشغّل أسفل الصفحة وتعرض المقطع الجاري. عند إيقافها لا يُقرأ المشغّل إطلاقًا.',
-      easyOn: 'الوضع السهل مفعّل',
-      easyOff: 'الوضع السهل متوقف',
-      npOn: 'تتبّع المقطع الجاري مفعّل',
-      npOff: 'تتبّع المقطع الجاري متوقف',
-      themeLabel: 'السمة',
-      themeAuto: 'مثل النظام',
-      themeDark: 'داكنة',
-      themeLight: 'فاتحة',
-      themeHint: 'في الوضع السهل تكون اللوحة داكنة وعالية التباين دائمًا.',
-      widthTitle: 'عرض اللوحة',
-      widthHint: 'اسحب المقبض على حافة اللوحة، أو ركّز عليه واستخدم <b>←</b> / <b>→</b> '
-        + '(مع <b>Shift</b> لخطوات كبيرة، و<b>Home</b>/<b>End</b> للحدّين). النقر المزدوج يعيد القيمة الافتراضية.',
-      widthReset: 'العرض الافتراضي',
-      widthNow: '{n} بكسل',
-      gQuality: 'جودة التنزيل',
-      qualCeil: 'الحد الأقصى للجودة',
-      qualHintH: 'يقاطع الخادم <b>هذا الحد مع دقة المقطع الأصلية</b>. '
-        + 'حتى لو اخترت 24/192 فسيصل مقطع القرص المضغوط بجودة 16/44.1، '
-        + 'وحدّ 24/96 يُبقي مقطع 24/176.4 بجودته الكاملة. '
-        + 'حدّ أقل = ملف أصغر وتنزيل أسرع.',
-      qualSet: 'الحد الأقصى للجودة: {q}',
-      qHighest: 'الأعلى',
-      gFile: 'اسم الملف',
-      tplLabel: 'القالب',
-      tplExample: 'معاينة',
-      ph_n: 'رقم المقطع (01، 02…)',
-      ph_title: 'عنوان الأغنية',
-      ph_version: 'النسخة / ملاحظة الريمكس',
-      ph_artist: 'الفنان',
-      ph_album: 'عنوان الألبوم',
-      ph_quality: 'الجودة (24-bit 192 kHz)',
-      ph_qualityShort: 'الجودة مختصرة (24-192)',
-      ph_isrc: 'رمز ISRC',
-      ph_year: 'السنة',
-      ph_label: 'شركة الإنتاج',
-      gSave: 'طريقة الحفظ',
-      smodeAuto: 'تلقائي — في هذا المتصفح: {how}',
-      smodeAutoFsa: 'مباشرة إلى القرص',
-      smodeAutoDl: 'تنزيل المتصفح',
-      smodeDl: 'تنزيل المتصفح (لا يكتب مباشرة إلى القرص)',
-      smodeFsa: 'مباشرة إلى القرص (اختر الوجهة)',
-      smodeHintFsaH: 'FSA = يكتب مباشرة إلى القرص، و<b>تُحفظ الملفات حيث تختار</b>، لكنك تختار الوجهة في كل مرة.',
-      smodeHintDlH: 'هذا المتصفح لا يدعم واجهة File System Access (Firefox). '
-        + 'تُسلَّم التنزيلات إلى مدير التنزيلات في المتصفح: <b>لا ملفات في غير مكانها ولا تضخّم في الذاكرة</b>، '
-        + 'وزر «فتح» يفتح الملف في النظام.',
-      gAbout: 'حول',
-      aboutH: 'ARCOD Grab · <b>Emre Dural</b><br>أداة مساعدة للتنزيل تعمل داخل صفحة ARCOD. '
-        + 'لا تُرسل أي بيانات إلى أي خادم.',
-      creditH: 'ARCOD Grab · من تطوير <b>Emre Dural</b>',
-      qUnkShort: 'غير معروفة',
-      qUnkName: 'الجودة غير معروفة',
-      qMaxName: 'hi-res · دقة عالية جدًا',
-      qEnhName: 'محسّنة',
-      mono: 'أحادي',
-      stereo: 'ستيريو',
-      chN: '{n} قنوات',
-      probeBtn: 'فحص الملف',
-      probeTip: 'يقرأ الجودة الفعلية للبث قبل التنزيل: عمق البت ومعدل العينة وسلامة الملف',
-      probeReading: 'جارٍ قراءة البث…',
-      probeFail: 'تعذّرت القراءة',
-      probeFailWhy: 'لم يُذكر السبب',
-      probeOkTitle: 'تمت قراءة الملف',
-      probeOriginal: 'يبدو الملف أصليًا.',
-      probeRepacked: 'أُعيدت تعبئة الملف (صُفِّرت قيمة التحقق الداخلية). الصوت سليم لكنه ليس الحزمة الأصلية.',
-      probeNoTags: 'لا وسوم في الملف — حُذفت معلومات مثل العنوان والفنان.',
-      kRate: 'معدل العينة',
-      kBits: 'عمق البت',
-      kCh: 'القنوات',
-      kDur: 'المدة',
-      kMd5: 'التحقق الداخلي (MD5)',
-      kMd5Zero: 'مصفّر',
-      kBlocks: 'الكتل',
-      probeWhyShort: 'لم تصل أول 42 بايت',
-      probeWhyMagic: 'التوقيع «{m}» — ليس fLaC',
-      probeWhyNoInfo: 'لا توجد كتلة STREAMINFO',
-      errAlbumNoData: 'لا توجد بيانات للألبوم',
-      errTicketUrl: 'لا يوجد url في التذكرة',
-      err502: 'أعاد الخادم الخطأ 502 — افتح الصفحة بشكل عادي ثم أعد المحاولة',
-      errAudioHttp: 'HTTP الصوت {n}',
-      errNoBody: 'لا يوجد جسم قابل للبث (body فارغ)',
-      errUnknown: 'خطأ غير معروف',
-      errBadUrl: 'عنوان غير متوقع',
-      errBadId: 'معرّف تنزيل غير صالح',
-      errBridgeNoBackend: 'لم تستجب الخلفية',
-      errBridgeTimeout: 'لم يستجب الجسر — حدّث الصفحة بالمفتاح F5 (يُعاد تحميل relay.js)',
-      nTracksH: '<b>{n}</b> مقطع',
-      totalH: '<b>{t}</b> إجمالًا',
-      mixNone: 'لا معلومات عن الجودة',
-      mixTip: 'توزيع جودة المقاطع',
-      nUnknown: '{n} غير معروف',
-      mixWarn: '⚠ جودات مختلطة — ليست كلها بأعلى جودة',
-      details: 'التفاصيل',
-      handing: 'جارٍ التسليم إلى مدير التنزيلات…',
-      dlStartedH: '✓ جارٍ التنزيل · {name} · في تنزيلات المتصفح',
-      ticketing: 'جارٍ الحصول على التذكرة…',
-      streamOpen: 'البث مفتوح · المتوقع {size} · الجودة {q}',
-      etaLeft: 'المتبقي {t}',
-      doneOk: '✓ اكتمل',
-      doneMismatch: '⚠ الحجم غير مطابق',
-      declSize: 'المعلن {size}',
-      secs: '{n} ث',
-      abortedLine: 'تم الإيقاف · كُتب {size}',
-      stopped: 'تم الإيقاف',
-      open: 'فتح',
-      openTip: 'فتح في المشغّل الافتراضي',
-      noHandle: 'لا يوجد مقبض للملف',
-      showFolder: 'إظهار في المجلد',
-      showFolderTipDl: 'يفتح صفحة التنزيلات (وفيها «إظهار في المجلد»)',
-      showFolderTipDir: 'يفتح مجلد التنزيلات الافتراضي',
-      folderFail: 'تعذّر فتح المجلد: {e}',
-      openFail: 'تعذّر الفتح: {e}',
-      tabBlockedH: 'حُظر فتح علامة تبويب جديدة — الملف: <b>{name}</b>',
-      queueRunH: 'جارٍ تنزيل القائمة ← <b>{dir}/</b> · 0/{n}',
-      albumRunH: 'جارٍ تنزيل الألبوم ← <b>{dir}/</b> · 0/{n}',
-      sumSent: 'أُرسل {ok}/{total}',
-      sumStarted: 'بدأ {ok}/{total}',
-      sumDone: 'نُزّل {ok}/{total}',
-      sumFail: '، أخطاء: {n}',
-      jobStoppedH: 'تم الإيقاف · {sum} ← <b>{dir}/</b>',
-      jobDoneErrH: 'انتهى (مع مقاطع فاشلة) · {sum} ← <b>{dir}/</b>',
-      albumOkFsaH: '✓ اكتمل الألبوم · {sum} ← في المجلد <b>{dir}/</b>',
-      albumOkDlH: '✓ أُرسل الألبوم · {sum} ← في المجلد <b>{dir}/</b>',
-      queueOkH: '✓ اكتملت القائمة · {sum} ← في المجلد <b>{dir}/</b>',
-      pausedQueueH: '⏸ أُوقفت القائمة مؤقتًا · كان قد أُرسل {done}/{total} · اضغط <b>{btn}</b> للمتابعة',
-      pausedAlbumH: '⏸ انقطع تنزيل الألبوم. اضغط <b>{btn}</b> للبدء من جديد.',
-      noFsaDir: 'هذا المتصفح لا يدعم اختيار المجلدات.',
-      mkdirFail: 'تعذّر إنشاء المجلد: {e}',
-      fileTypeDesc: 'صوت FLAC',
-      ctxDownload: 'تنزيل عبر ARCOD Grab',
-      ctxQueue: 'إضافة إلى قائمة التنزيل',
-      ctxQueued: 'في القائمة ✓',
-      ctxQueuedTip: 'هذا المقطع في القائمة بالفعل',
-      ctxQueueTip: 'أضِف إلى القائمة ثم نزّل الكل واحدًا تلو الآخر',
-      ctxAddedH: '✓ أُضيف إلى القائمة · {title} · {n} مقطع',
-      ctxDupH: 'موجود في القائمة بالفعل · {title}',
-      scTitle: 'اختصارات لوحة المفاتيح',
-      scHintH: 'تعمل على player.arcod.xyz حتى عند إغلاق اللوحة. '
-        + 'انقر على الخانة ثم اضغط توليفة المفاتيح. '
-        + '<b>Esc</b> للإلغاء و<b>Backspace</b> لمسح الاختصار.',
-      scReset: 'استعادة الافتراضي',
-      scPrev: 'المقطع السابق',
-      scNext: 'المقطع التالي',
-      scVolUp: 'رفع الصوت',
-      scVolDown: 'خفض الصوت',
-      scKeyAria: 'اختصار: {a}',
-      scPress: 'اضغط مفتاحًا…',
-      scNone: 'غير محدد',
-      scWarnNone: 'غير معيّن: لن يعمل هذا الإجراء.',
-      scWarnConflict: 'يتعارض مع: {names}. يعمل الأول في القائمة فقط.',
-      scWarnReserved: 'المتصفح يستخدم هذا الاختصار بنفسه؛ قد لا يعمل.',
-      keySpace: 'مسافة',
-      volToast: 'الصوت {n}%',
-      homeMeta: 'انقر بزر الفأرة الأيمن على مقطع في القائمة',
-      homeTipH: 'انقر <b>بزر الفأرة الأيمن</b> على المقطع الذي تريد تنزيله ← <b>{item}</b>.'
-        + '<br>وإذا فتحت ألبومًا (…/album/&lt;UPC&gt;) فستظهر القائمة هنا أيضًا.',
-      albumLoading: 'جارٍ تحميل الألبوم…',
-      albumReadFail: '✗ تعذّرت قراءة الألبوم: {e}',
-      dec: '.',
-    },
   };
 
   let LANG = 'tr';   // gecerli dil; setLang() ile (cfg yuklendikten sonra) belirlenir
+
+  /* Gorunen her metin cumle basi buyuk harfle baslar. Sozluk metinleri kasitli
+   * olarak kucuk harfle yazilmis olabilir (ayar etiketleri, dugme adlari);
+   * ilk harf burada DILE DUYARLI buyutulur (tr: i -> İ, ı -> I). CSS
+   * text-transform kullanilmaz: dil kodu panelde degisince sonuc tutarsiz olurdu.
+   * Cumle ICINE giren parcalar (ornegin "{how}" ya da ", N hata") buyutulmez. */
+  const NOCAP = new Set(['dec', 'etaLeft', 'declSize', 'secs', 'qHighest']);
+  function capFirst(s) {
+    const c = s.charAt(0);
+    if (!c || c === '{' || c === '<') return s;
+    let u = c;
+    try { u = c.toLocaleUpperCase(LANG); } catch { u = c.toUpperCase(); }
+    return u + s.slice(1);
+  }
 
   /* T('anahtar', {n: 3}): gecerli dil -> TR -> anahtarin kendisi.
    * Yer tutucu degeri yoksa {ad} oldugu gibi kalir (sessizce bozulmaz). */
@@ -1517,6 +1454,7 @@ const API = '/api/player';
     let s = I18N[LANG] && I18N[LANG][key];
     if (s === undefined) s = I18N.tr[key];
     if (s === undefined) return key;
+    if (!NOCAP.has(key)) s = capFirst(s);
     if (!p) return s;
     return s.replace(/\{(\w+)\}/g, (m, k) => (p[k] === undefined ? m : String(p[k])));
   }
@@ -1537,11 +1475,6 @@ const API = '/api/player';
 
   function resolveLang(pick) {
     return pick && pick !== 'auto' && I18N[pick] ? pick : detectLang();
-  }
-
-  function langDir() {
-    const m = LANGS.find((l) => l.id === LANG);
-    return m ? m.dir : 'ltr';
   }
 
   /* Statik metin dugumleri veri oznitelikleriyle isaretlenir; dil degisince
@@ -1592,11 +1525,13 @@ const API = '/api/player';
       shortcuts: null,   // { prev, next, volUp, volDown } — bos = varsayilanlar
       theme: 'auto',     // 'auto' | 'dark' | 'light'
       lang: 'auto',      // 'auto' (tarayici dili) | I18N'deki bir dil kodu
+      scScope: 'page',   // kisayol kapsami: 'page' (yalnizca ARCOD sayfasi) | 'global' (chrome.commands)
     },
     loadCfg(),
   );
   /* kayitli dil artik desteklenmiyorsa otomatige don; dili simdi coz */
   if (cfg.lang !== 'auto' && !I18N[cfg.lang]) cfg.lang = 'auto';
+  if (cfg.scScope !== 'global') cfg.scScope = 'page';
   LANG = resolveLang(cfg.lang);
   /* easy: null = henuz secilmedi -> sisteme sor */
   if (cfg.easy === null || cfg.easy === undefined) {
@@ -1723,7 +1658,7 @@ const API = '/api/player';
       id: String(track.id),
       title: track.title || '',
       artist: trackArtist(track),
-      album: (album && album.title) || track.albumName || '',
+      album: trackAlbumName(track),
       spec: specOf(track) || '',
       bits: trackFacts(track).bits,
       rate: trackFacts(track).rate,
@@ -1733,6 +1668,28 @@ const API = '/api/player';
     });
     saveQueue();
     return true;
+  }
+
+  /* Parcanin kendi album adi; yoksa acik albumun adi. */
+  function trackAlbumName(t) {
+    const q = (t && t.qobuzTrack) || {};
+    const a = t.album || q.album || {};
+    return str(t.album_name, t.albumName, a.title, a.name) || (album && album.title) || '';
+  }
+
+  /* Tum "siraya ekle" yollari (sag tik menusu, su an caliyor karti) buradan
+   * gecer: ekler, listeyi HEMEN cizer (hangi sayfada olursa olsun; gorunum
+   * albume bagli degil) ve sonucu bildirir. Panel kapaliysa liste cizilmez,
+   * durum kucuk bildirim olarak gorunur. */
+  function queueAdd(track) {
+    const eklendi = addToQueue(track);
+    renderQueue();
+    setGlobal(
+      eklendi
+        ? th('ctxAddedH', { title: track.title || '', n: queue.length })
+        : th('ctxDupH', { title: track.title || '' }),
+      eklendi ? 'ok' : 'err');
+    return eklendi;
   }
 
   function removeFromQueue(id) {
@@ -1963,6 +1920,62 @@ const API = '/api/player';
     { key: '{label}', title: 'ph_label' },
   ];
 
+  /* ---- sablon <-> blok modeli (saf islevler) ----
+   * Model: { phs: [yer tutucular], seps: [ayiricilar], ext }; seps[i] i. bloktan
+   * ONCE, seps[i+1] sonra gelir (seps.length = phs.length + 1). Siralama
+   * yalnizca bloklari yer degistirir; ayiricilar yuvalarinda kalir. */
+  const TPL_SPLIT = /(\{(?:n|title|version|artist|album|quality|qualityShort|isrc|year|label|spec)\})/;
+
+  function tplParse(str) {
+    let s = String(str == null ? '' : str);
+    let ext = '';
+    const m = /(\.[A-Za-z0-9]{2,5})$/.exec(s);
+    if (m) { ext = m[1]; s = s.slice(0, s.length - ext.length); }
+    const parts = s.split(TPL_SPLIT);
+    const phs = [];
+    const seps = [];
+    for (let i = 0; i < parts.length; i++) (i % 2 ? phs : seps).push(parts[i]);
+    return { phs, seps, ext };
+  }
+
+  function tplBuild(m) {
+    let out = m.seps[0] || '';
+    for (let i = 0; i < m.phs.length; i++) out += m.phs[i] + (m.seps[i + 1] || '');
+    return out + (m.ext || '');
+  }
+
+  function tplMove(m, from, to) {
+    if (from === to || from < 0 || to < 0 || from >= m.phs.length || to >= m.phs.length) return;
+    const k = m.phs.splice(from, 1)[0];
+    m.phs.splice(to, 0, k);
+  }
+
+  function tplRemoveAt(m, i) {
+    const n = m.phs.length;
+    if (i < 0 || i >= n) return;
+    m.phs.splice(i, 1);
+    if (n > 1) {
+      /* yanindaki ayiricilardan biri de gider: ilk blokta sonraki, sonuncuda
+       * onceki; ortadakinde KISA olan (bos olan: bitisik bloklar korunur). */
+      let k = i === 0 ? 1 : i === n - 1 ? n - 1 : (m.seps[i].length < m.seps[i + 1].length ? i : i + 1);
+      m.seps.splice(k, 1);
+    }
+  }
+
+  function tplAdd(m, key) {
+    const n = m.phs.length;
+    if (!n) { m.phs.push(key); m.seps.push(''); return; }
+    const sep = key === '{version}' ? '' : (n >= 2 ? m.seps[n - 1] : ' - ');
+    m.phs.push(key);
+    m.seps.splice(n, 0, sep);                              // sonekten once
+  }
+
+  /* Varsa tum kopyalari cikarir, yoksa sona ekler. */
+  function tplToggle(m, key) {
+    if (m.phs.indexOf(key) < 0) { tplAdd(m, key); return; }
+    for (let i = m.phs.length - 1; i >= 0; i--) if (m.phs[i] === key) tplRemoveAt(m, i);
+  }
+
   /* Dosya adindaki kalite metni. Uzun: "24-bit 192 kHz", kisaltilmis
    * sadece sayi tarafi: "24-192". */
   function qualityText(t) {
@@ -2148,6 +2161,83 @@ const API = '/api/player';
     el.npSub.innerHTML = bits.join(' · ');
   }
 
+  /* "Bilinmiyor" kalitesi: oynatici cubugundan gelen parca nesnesi bazen
+   * maximum_bit_depth / maximum_sampling_rate tasimaz (album nesnesi tasir).
+   * Sirayla bakilir: (1) acik albumdaki parca, (2) parcanin kendi albumu
+   * (get-album, bellekte tutulur), (3) son care: akistan FLAC basligi. */
+  const npFacts = new Map();        // parca kimligi -> { maximum_bit_depth, maximum_sampling_rate }
+  const npAlbums = new Map();       // album kimligi -> Promise<album | null>
+  const npBusy = new Set();
+
+  function npPick(tr) {
+    const f = trackFacts(tr);
+    if (!f.bits || !f.rate) return null;
+    const r = { maximum_bit_depth: f.bits, maximum_sampling_rate: f.rate / 1000 };
+    if (f.dur) r.duration = f.dur;
+    return r;
+  }
+
+  function npAlbumId(t) {
+    const q = (t && t.qobuzTrack) || {};
+    const a = t.album || q.album || {};
+    return str(String(a.id || ''), String(t.album_id || ''), String(t.albumId || ''));
+  }
+
+  const npFind = (alb, id) => {
+    const items = alb && alb.tracks && alb.tracks.items;
+    return Array.isArray(items) ? items.find((x) => String(x.id) === id) : null;
+  };
+
+  async function npLookup(t) {
+    const id = String(t.id);
+    let hit = npFind(album, id);
+    let r = hit && npPick(hit);
+    if (r) return r;
+    const aid = npAlbumId(t);
+    if (aid) {
+      if (!npAlbums.has(aid)) npAlbums.set(aid, getAlbum(aid).catch(() => null));
+      hit = npFind(await npAlbums.get(aid), id);
+      r = hit && npPick(hit);
+      if (r) return r;
+    }
+    const ctl = new AbortController();
+    try {
+      const { body } = await openStream(id, ctl.signal);
+      const reader = body.getReader();
+      const parts = [];
+      let n = 0;
+      while (n < PROBE_BYTES) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        parts.push(value);
+        n += value.length;
+      }
+      await reader.cancel().catch(() => {});
+      const u8 = new Uint8Array(n);
+      let o = 0;
+      for (const p of parts) { u8.set(p, o); o += p.length; }
+      const head = readFlacHead(u8);
+      if (head.ok && head.bps && head.rate) {
+        return { maximum_bit_depth: head.bps, maximum_sampling_rate: head.rate / 1000 };
+      }
+    } catch { /* akis okunamadi: bilinmiyor kalir */ } finally { ctl.abort(); }
+    return null;
+  }
+
+  async function resolveNpFacts(t) {
+    if (!t || npPick(t)) return;
+    const id = String(t.id);
+    let hit = npFacts.get(id);
+    if (!hit && !npBusy.has(id)) {
+      npBusy.add(id);
+      try { hit = await npLookup(t); } catch { hit = null; } finally { npBusy.delete(id); }
+      if (hit) npFacts.set(id, hit);
+    }
+    if (!hit || !npTrack || String(npTrack.id) !== id) return;   // arada parca degisti
+    npTrack = Object.assign({}, npTrack, hit);
+    renderNowPlaying();
+  }
+
   function pollNowPlaying() {
     if (!el.npBox) return;
     let t = null;
@@ -2158,9 +2248,10 @@ const API = '/api/player';
       return;
     }
     if (String(t.id) === String(npId)) return;    /* ayni parca: dokunma */
-    npTrack = t;
+    npTrack = npFacts.has(String(t.id)) ? Object.assign({}, t, npFacts.get(String(t.id))) : t;
     npId = t.id;
     renderNowPlaying();
+    resolveNpFacts(npTrack);
   }
 
   let npTimer = null;
@@ -2365,10 +2456,10 @@ async function ticket(id, quality) {
   --gold:      #8a5a00;
   --ok-bg:     rgba(26, 127, 55, 0.10);
   --err-bg:    rgba(196, 40, 28, 0.08);
-  --q-max:     #7a5200; --q-max-bg:   rgba(255, 190, 0, 0.22);
-  --q-hires:   #005a9e; --q-hires-bg: rgba(10, 132, 255, 0.13);
-  --q-enh:     #1a7f37; --q-enh-bg:   rgba(36, 138, 61, 0.13);
-  --q-cd:      #55555a; --q-cd-bg:    rgba(120, 120, 128, 0.16);
+  --q-max:     #6b4600; --q-max-bg:   rgba(255, 190, 0, 0.26);
+  --q-hires:   #004f8a; --q-hires-bg: rgba(10, 132, 255, 0.15);
+  --q-enh:     #136428; --q-enh-bg:   rgba(36, 138, 61, 0.16);
+  --q-cd:      #48484d; --q-cd-bg:    rgba(120, 120, 128, 0.20);
   --shadow:    rgba(0, 0, 0, 0.14);
   color-scheme: light;`;
 
@@ -2410,7 +2501,7 @@ async function ticket(id, quality) {
   --accent-d:  #28a745;
   --on-accent: #04210f;   /* accent uzerindeki yazi (kontrast >= 7:1) */
   --ok:        #30d158;   /* yazi olarak "basarili" */
-  --err:       var(--err);
+  --err:       #ff6961;
   --blue:      #0a84ff;   /* odak halkasi */
   --link:      #64b5ff;   /* mavi yazi (yer tutucu dugmeleri) */
   --gold:      #ffd60a;
@@ -2498,7 +2589,7 @@ async function ticket(id, quality) {
 /* ---------------------------------------------- genislik tutamaci
  * Panelin sol kenarinda 8px'lik dikey serit. DIL YONUNDEN BAGIMSIZ: panel
  * ekranin saginda sabit durur, tutamac ekranin solundaki kenardadir; bu yuzden
- * burada bilerek FIZIKSEL left/right kullanilir (RTL'de de degismez).
+ * burada bilerek FIZIKSEL left/right kullanilir.
  * Surukleme yonu clientX (gercek ekran) uzerinden hesaplanir. Gorunur cizgi yalnizca
  * uzerine gelince / odaklaninca / surukleyince belirir. */
 .grip {
@@ -2663,8 +2754,7 @@ button.icon.mini { width: 24px; }
   margin-bottom: 7px;
   font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--ok);
 }
 .nphead { display: flex; align-items: center; gap: 8px; }
@@ -2987,23 +3077,26 @@ button.icon.mini { width: 24px; }
 .gtip { margin-top: 7px; font-size: 11.5px; color: var(--label-2); }
 
 /* ------------------------------------------------------- kalite rozetleri */
+/* Rozet: yuksek kontrastli renk + ince cerceve (renk ile ayni tonda), 600
+ * agirlik. Tum temalarda yazi/arka plan orani WCAG AA (>= 4.5:1). */
 .qb {
   display: inline-flex;
   align-items: center;
-  height: 19px;
-  padding: 0 7px;
+  height: 21px;
+  padding: 0 9px;
   font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
   white-space: nowrap;
   border-radius: var(--r-pill);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 38%, transparent);
 }
 .q-max   { color: var(--q-max);   background: var(--q-max-bg); }
 .q-hires { color: var(--q-hires); background: var(--q-hires-bg); }
 .q-enh   { color: var(--q-enh);   background: var(--q-enh-bg); }
 .q-cd    { color: var(--q-cd);    background: var(--q-cd-bg); }
-.q-unk   { color: var(--label-3); background: var(--fill); }
+.q-unk   { color: var(--label-2); background: var(--fill); }
 
 .hires {
   width: 22px;
@@ -3101,9 +3194,8 @@ button.icon.mini { width: 24px; }
 .pgt {
   padding: 0 16px 6px;
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--label-2);
 }
 /* DIKKAT: anahtarlar (.sw) da bir <label> ve .pgroup icinde duruyor.
@@ -3144,6 +3236,20 @@ button.icon.mini { width: 24px; }
   background-position: right 10px center;
   background-size: 10px 6px;
   cursor: pointer;
+}
+/* Acilir listeler: yerel acilan liste kendi arka planini cizer; tokenlar
+ * yari saydam oldugu icin yazi/arka plan ACIKCA ve opak verilir (aksi halde
+ * beyaz zeminde beyaz yazi cikiyordu). color-scheme temaya baglanir. */
+.pgroup select { color-scheme: dark; }
+@media (prefers-color-scheme: light) {
+  :host([data-theme="auto"]) .pgroup select { color-scheme: light; }
+}
+:host([data-theme="light"]) .pgroup select { color-scheme: light; }
+.pgroup select { color: var(--label); }
+.pgroup select option,
+.pgroup select optgroup {
+  color: var(--label);
+  background-color: var(--bg-solid);
 }
 .pgroup > input:focus-visible, .pgroup > select:focus-visible {
   outline: 2px solid var(--blue);
@@ -3223,6 +3329,54 @@ button.icon.mini { width: 24px; }
   background: rgba(10, 132, 255, 0.12);
 }
 .chip:hover:not(:disabled) { background: rgba(10, 132, 255, 0.22); }
+.chip.on, .chip.tc { color: var(--on-accent); background: var(--accent); font-weight: 600; }
+.chip.on:hover:not(:disabled), .chip.tc:hover:not(:disabled) { background: var(--accent-d); }
+
+/* sablon blok editoru: bloklar + ayirici kutulari; bloklar surukle-birak ile siralanir */
+.tstrip {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin: 8px 12px 0; padding: 10px; min-height: 52px;
+  border-radius: var(--r-card);
+  background: var(--raise-2);
+  box-shadow: inset 0 0 0 0.5px var(--sep);
+}
+.tc { height: 30px; padding: 0 11px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; position: relative; }
+.tc::before { content: "⋮⋮"; margin-inline-end: 6px; letter-spacing: -2px; opacity: 0.6; }
+.tc.drag { cursor: grabbing; z-index: 3; opacity: 0.92; box-shadow: 0 6px 18px var(--shadow); transition: none; }
+.tc.tgt { outline: 2px dashed var(--blue); outline-offset: 2px; }
+.sepin {
+  height: 30px; min-width: 3ch; padding: 0 4px;
+  font-family: var(--mono); font-size: 12px; text-align: center;
+  color: var(--label); background: transparent; border: 0; border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--sep);
+}
+.sepin:hover { background: var(--raise-h); }
+.sepin:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+.xext { padding: 0 4px; font-family: var(--mono); font-size: 12px; color: var(--label-2); }
+.tempty { font-size: 11.5px; color: var(--label-2); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* secenek kartlari (radyo): kaydetme yontemi, kisayol kapsami */
+.opts { display: flex; flex-direction: column; gap: 8px; margin: 0 12px; }
+.opt {
+  position: relative; display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px; cursor: pointer;
+  border-radius: var(--r-card); background: var(--raise);
+  box-shadow: inset 0 0 0 0.5px var(--sep);
+}
+.opt input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+.opt .radio {
+  flex: none; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--label-3);
+}
+.opt.sel { background: var(--ok-bg); box-shadow: inset 0 0 0 2px var(--accent); }
+.opt.sel .radio { box-shadow: inset 0 0 0 6px var(--accent); background: var(--on-accent); }
+.opt input:focus-visible ~ .radio { outline: 2px solid var(--blue); outline-offset: 2px; }
+.opt.off { cursor: not-allowed; opacity: 0.7; }
+.otxt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.ot { font-size: 14px; font-weight: 600; color: var(--label); }
+.od { font-size: 11.5px; line-height: 1.45; color: var(--label-2); }
+.onote { font-size: 11.5px; line-height: 1.45; color: var(--gold); }
 
 .pv {
   display: flex;
@@ -3238,8 +3392,7 @@ button.icon.mini { width: 24px; }
   padding-top: 1px;
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--label-3);
 }
 .pvf {
@@ -3386,7 +3539,7 @@ button.icon.mini { width: 24px; }
 :host([data-easy="1"]) .rsub { font-size: 16px; white-space: normal; }
 :host([data-easy="1"]) .rinfo { white-space: normal; }
 :host([data-easy="1"]) .dur { font-size: 16px; }
-:host([data-easy="1"]) .qb { height: 28px; padding: 0 12px; font-size: 14px; }
+:host([data-easy="1"]) .qb { height: 30px; padding: 0 13px; font-size: 15px; }
 :host([data-easy="1"]) .hires { width: 32px; height: 32px; }
 :host([data-easy="1"]) .dis { width: 40px; height: 40px; }
 :host([data-easy="1"]) .dis svg { width: 18px; height: 18px; }
@@ -3406,6 +3559,8 @@ button.icon.mini { width: 24px; }
 :host([data-easy="1"]) .sc-warn { font-size: 15px; }
 :host([data-easy="1"]) .sc-list { margin: 12px 16px 0; }
 :host([data-easy="1"]) .sc-foot { margin: 14px 16px 0; }
+:host([data-easy="1"]) .sc-sub { font-size: 15px; padding: 16px 20px 6px; }
+:host([data-easy="1"]) .sc-assigned { font-size: 16px; }
 :host([data-easy="1"]) .wbtn { margin: 14px 16px 0; }
 :host([data-easy="1"]) .np .bar2 { margin: 7px 0 0; }
 :host([data-easy="1"]) .np .stat { padding: 0; }
@@ -3428,6 +3583,12 @@ button.icon.mini { width: 24px; }
 :host([data-easy="1"]) .swtxt span { font-size: 15px; }
 :host([data-easy="1"]) .chip { height: 42px; padding: 0 16px; font-size: 16px; border-radius: 12px; }
 :host([data-easy="1"]) .chips { gap: 8px; padding: 12px 16px 0; }
+:host([data-easy="1"]) .tc { height: 44px; }
+:host([data-easy="1"]) .sepin { height: 44px; font-size: 16px; }
+:host([data-easy="1"]) .tstrip { margin: 10px 16px 0; }
+:host([data-easy="1"]) .opts { margin: 0 16px; }
+:host([data-easy="1"]) .ot { font-size: 18px; }
+:host([data-easy="1"]) .od, :host([data-easy="1"]) .onote { font-size: 15px; }
 :host([data-easy="1"]) .pv { margin: 14px 16px 0; padding: 14px; border-radius: 14px; }
 :host([data-easy="1"]) .pvf { font-size: 15px; }
 :host([data-easy="1"]) .pvl { font-size: 13px; }
@@ -3439,35 +3600,69 @@ button.icon.mini { width: 24px; }
 :host([data-easy="1"]) .mono, :host([data-easy="1"]) .rfil,
 :host([data-easy="1"]) .mix { font-size: 14px; }
 :host([data-easy="1"]) .prow { font-size: 15px; padding: 12px 14px; border-radius: 12px; }
+:host([data-easy="1"]) .pgroup select { color-scheme: dark; }
 
-/* ===================================================================
-   RTL (Arapca). Dil yonu .wrap[dir] ile verilir.
-   Panelin EKRANDAKI konumu degismez: .wrap fixed + right:0, .grip left:0 ve
-   kenar cizgisi/golge fiziksel kalir; surukleme yonu gercek ekran
-   koordinatlaridir. Burada yalnizca ic duzen aynalanir (yatay ikonlar, anahtar,
-   secim oku) ve dosya adi gibi teknik metinler soldan saga tutulur.
-   =================================================================== */
-.wrap[dir="rtl"] { direction: rtl; }
-.wrap[dir="rtl"] .dis svg,
-.wrap[dir="rtl"] #setBack svg { transform: scaleX(-1); }
-.wrap[dir="rtl"] .row.open .dis svg { transform: rotate(90deg); }
-.wrap[dir="rtl"] .pgroup > select { background-position: left 10px center; }
-.wrap[dir="rtl"] .sw input:checked + .swbox::after { transform: translateX(-18px); }
-:host([data-easy="1"]) .wrap[dir="rtl"] .sw input:checked + .swbox::after { transform: translateX(-26px); }
-.wrap[dir="rtl"] #tpl,
-.wrap[dir="rtl"] .pvf,
-.wrap[dir="rtl"] .rfil,
-.wrap[dir="rtl"] .chip { direction: ltr; unicode-bidi: isolate; }
 `;
 
   let host = null;
   let sh = null;
   let el = {};
 
+  /* Radyo kartlari: options = [{ value, title, desc, off?, note? }]. Gercek
+   * <input type=radio> kullanilir (klavye: ok tuslari, ekran okuyucu). */
+  function buildChoice(box, name, options, current, onPick) {
+    box.textContent = '';
+    const labs = [];
+    for (const o of options) {
+      const lab = document.createElement('label');
+      lab.className = 'opt' + (o.off ? ' off' : '');
+      const inp = document.createElement('input');
+      inp.type = 'radio';
+      inp.name = name;
+      inp.value = o.value;
+      inp.checked = o.value === current;
+      inp.disabled = !!o.off;
+      const dot = document.createElement('span');
+      dot.className = 'radio';
+      dot.setAttribute('aria-hidden', 'true');
+      const txt = document.createElement('span');
+      txt.className = 'otxt';
+      const t = document.createElement('b');
+      t.className = 'ot';
+      t.textContent = o.title;
+      const d = document.createElement('span');
+      d.className = 'od';
+      d.textContent = o.desc;
+      txt.append(t, d);
+      if (o.note) {
+        const n = document.createElement('span');
+        n.className = 'onote';
+        n.textContent = o.note;
+        txt.append(n);
+      }
+      lab.append(inp, dot, txt);
+      lab.classList.toggle('sel', inp.checked);
+      inp.addEventListener('change', () => {
+        if (!inp.checked) return;
+        for (const l of labs) l.classList.toggle('sel', l.firstChild.checked);
+        onPick(o.value);
+      });
+      labs.push(lab);
+      box.appendChild(lab);
+    }
+  }
+
   function build() {
     if (host) return;
     host = document.createElement('div');
     host.id = 'arcod-grab-host';
+    /* Panelin icindeki tus olaylari sayfanin (document/window) dinleyicilerine
+     * ulasmasin: golge DOM'dan sizan olay sayfada "hedef = host" gorunur ve
+     * oynatici kisayollari (Bosluk = oynat/duraklat) tetiklenirdi. Yazi
+     * alanlari icin capture asamasindaki engel ayrica asagida (panelTyping). */
+    for (const type of ['keydown', 'keyup', 'keypress']) {
+      host.addEventListener(type, (ev) => ev.stopPropagation());
+    }
     sh = host.attachShadow({ mode: 'closed' });
 
     const style = document.createElement('style');
@@ -3478,7 +3673,6 @@ button.icon.mini { width: 24px; }
     /* Metinler T()/lbl() ile gelir; data-i18n* oznitelikleri dil degisince
      * applyI18n() ile yeniden yazilmalarini saglar. */
     const ea = (k) => escapeHtml(T(k));
-    wrap.setAttribute('dir', langDir());
     wrap.setAttribute('lang', LANG);
     wrap.innerHTML = `
       <div class="grip" id="grip" role="separator" aria-orientation="vertical" tabindex="0"
@@ -3581,9 +3775,14 @@ button.icon.mini { width: 24px; }
             <div class="pgroup">
               <div class="pgt" data-i18n="gFile">${ea('gFile')}</div>
 
+              <label id="tplBlocksL" data-i18n="tplBlocks">${ea('tplBlocks')}</label>
+              <div class="tstrip" id="tplStrip" role="group" aria-labelledby="tplBlocksL"></div>
+              <div class="hint" data-i18n="tplBlocksHint">${ea('tplBlocksHint')}</div>
+              <label id="tplPoolL" data-i18n="tplPool">${ea('tplPool')}</label>
+              <div class="chips" id="chips" role="group" aria-labelledby="tplPoolL"></div>
               <label for="tpl" data-i18n="tplLabel">${ea('tplLabel')}</label>
               <input id="tpl" spellcheck="false" autocomplete="off">
-              <div class="chips" id="chips"></div>
+              <div class="sr" id="tplLive" role="status" aria-live="polite"></div>
               <div class="pv">
                 <span class="pvl" data-i18n="tplExample">${ea('tplExample')}</span>
                 <span class="pvf" id="tplPrev">—</span>
@@ -3591,9 +3790,9 @@ button.icon.mini { width: 24px; }
             </div>
 
             <div class="pgroup">
-              <div class="pgt" data-i18n="gSave">${ea('gSave')}</div>
-              <select id="smode"></select>
-              <div class="hint" id="smodeHint"></div>
+              <div class="pgt" id="saveT" data-i18n="gSave">${ea('gSave')}</div>
+              <div class="opts" id="smode" role="radiogroup" aria-labelledby="saveT"></div>
+              <div class="hint" data-i18n="saveQueueNote">${ea('saveQueueNote')}</div>
             </div>
 
             <div class="pgroup sc-group" id="scGroup"></div>
@@ -3756,31 +3955,200 @@ button.icon.mini { width: 24px; }
       if (full) render();
     }
 
-    el.tpl.addEventListener('input', () => commitTemplate(false));
+    /* Sablon = bloklar (yer tutucular) + aralarindaki ayiricilar + uzanti.
+     * Blok editoru sirayi surukle-birak ile degistirir; kalici saklama yine
+     * ayni METIN sablonudur (cfg.template), tplParse/tplBuild ikisini cevirir. */
+    const tplStrip = sh.getElementById('tplStrip');
+    const tplLive = sh.getElementById('tplLive');
+    const chipBox = sh.getElementById('chips');
+    let tplModel = tplParse(cfg.template);
+
+    const say = (key, p) => {
+      tplLive.textContent = '';
+      setTimeout(() => { tplLive.textContent = T(key, p); }, 30);
+    };
+    const phTitle = (key) => {
+      const p = PLACEHOLDERS.find((x) => x.key === key);
+      return p ? T(p.title) : key;
+    };
+
+    function tplSync(full, rerender) {
+      const built = tplBuild(tplModel);
+      el.tpl.value = built;
+      commitTemplate(full);
+      if (!built.trim()) {                       // bos kaldi: varsayilana donuldu
+        el.tpl.value = cfg.template;
+        tplModel = tplParse(cfg.template);
+        rerender = true;
+      }
+      if (rerender) renderTpl();
+      renderPool();
+    }
+
+    function renderPool() {
+      for (const b of chipBox.children) {
+        const key = b.dataset.key;
+        const on = tplModel.phs.indexOf(key) >= 0;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.setAttribute('aria-label', T('tplPoolAria', { name: key }));
+        b.title = phTitle(key);
+      }
+    }
+
+    /* Surukle-birak (pointer events: fare + dokunmatik). 5 px'ten az hareket
+     * tiklama sayilir (kaldir). Klavye: odaktaki blokta ← → tasir, Enter/Bosluk
+     * ve Delete kaldirir. */
+    function chipEl(key, i) {
+      const c = document.createElement('button');
+      c.type = 'button';
+      c.className = 'chip tc';
+      c.textContent = key;
+      c.dataset.i = String(i);
+      c.title = phTitle(key);
+      c.setAttribute('aria-label', T('tplChipAria', { name: key }));
+      let drag = null;
+      let dragged = false;
+
+      const chips = () => Array.from(tplStrip.querySelectorAll('.tc'));
+      const nearest = (x, y) => {
+        let best = -1;
+        let bd = Infinity;
+        chips().forEach((n, j) => {
+          const r = n.getBoundingClientRect();
+          const d = Math.hypot(x - (r.left + r.width / 2), (y - (r.top + r.height / 2)) * 1.6);
+          if (d < bd) { bd = d; best = j; }
+        });
+        return best;
+      };
+      const clear = () => { for (const n of chips()) n.classList.remove('tgt'); };
+
+      c.addEventListener('pointerdown', (ev) => {
+        if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+        drag = { id: ev.pointerId, x0: ev.clientX, y0: ev.clientY, moved: false, to: i };
+        dragged = false;
+        try { c.setPointerCapture(ev.pointerId); } catch { /* yoksay */ }
+      });
+      c.addEventListener('pointermove', (ev) => {
+        if (!drag || ev.pointerId !== drag.id) return;
+        const dx = ev.clientX - drag.x0;
+        const dy = ev.clientY - drag.y0;
+        if (!drag.moved && Math.hypot(dx, dy) > 5) { drag.moved = true; c.classList.add('drag'); }
+        if (!drag.moved) return;
+        c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+        const j = nearest(ev.clientX, ev.clientY);
+        drag.to = j < 0 ? i : j;
+        clear();
+        if (drag.to !== i) chips()[drag.to].classList.add('tgt');
+      });
+      const finish = (ev, cancel) => {
+        if (!drag || ev.pointerId !== drag.id) return;
+        const d = drag;
+        drag = null;
+        try { c.releasePointerCapture(ev.pointerId); } catch { /* yoksay */ }
+        c.classList.remove('drag');
+        c.style.transform = '';
+        clear();
+        if (!d.moved) return;
+        dragged = true;                                  // ardindan gelen click'i yut
+        if (cancel || d.to === i) return;
+        tplMove(tplModel, i, d.to);
+        tplSync(true, true);
+        const moved = tplStrip.querySelectorAll('.tc')[d.to];
+        if (moved) moved.focus();
+        say('tplMoved', { name: key, pos: d.to + 1 });
+      };
+      c.addEventListener('pointerup', (ev) => finish(ev, false));
+      c.addEventListener('pointercancel', (ev) => finish(ev, true));
+      c.addEventListener('click', () => {
+        if (dragged) { dragged = false; return; }
+        tplRemoveAt(tplModel, i);
+        tplSync(true, true);
+        say('tplRemoved', { name: key });
+      });
+      c.addEventListener('keydown', (ev) => {
+        const step = ev.key === 'ArrowLeft' || ev.key === 'ArrowUp' ? -1
+          : ev.key === 'ArrowRight' || ev.key === 'ArrowDown' ? 1 : 0;
+        if (step) {
+          ev.preventDefault();
+          const to = i + step;
+          if (to < 0 || to >= tplModel.phs.length) return;
+          tplMove(tplModel, i, to);
+          tplSync(true, true);
+          const moved = tplStrip.querySelectorAll('.tc')[to];
+          if (moved) moved.focus();
+          say('tplMoved', { name: key, pos: to + 1 });
+        } else if (ev.key === 'Delete' || ev.key === 'Backspace') {
+          ev.preventDefault();
+          tplRemoveAt(tplModel, i);
+          tplSync(true, true);
+          say('tplRemoved', { name: key });
+        }
+      });
+      return c;
+    }
+
+    function sepEl(i) {
+      const inp = document.createElement('input');
+      inp.className = 'sepin';
+      inp.spellcheck = false;
+      inp.autocomplete = 'off';
+      inp.value = tplModel.seps[i];
+      inp.setAttribute('aria-label', T('tplSepAria', { n: i + 1 }));
+      const fit = () => { inp.style.width = (Math.max(1, inp.value.length) + 2) + 'ch'; };
+      fit();
+      inp.addEventListener('input', () => { tplModel.seps[i] = inp.value; fit(); tplSync(false, false); });
+      inp.addEventListener('change', () => tplSync(true, false));
+      return inp;
+    }
+
+    function renderTpl() {
+      tplStrip.textContent = '';
+      const n = tplModel.phs.length;
+      for (let i = 0; i < n; i++) {
+        tplStrip.append(sepEl(i), chipEl(tplModel.phs[i], i));
+      }
+      tplStrip.append(sepEl(n));
+      if (!n) {
+        const em = document.createElement('span');
+        em.className = 'tempty';
+        em.textContent = T('tplEmpty');
+        tplStrip.append(em);
+      }
+      if (tplModel.ext) {
+        const x = document.createElement('span');
+        x.className = 'xext';
+        x.textContent = tplModel.ext;
+        x.setAttribute('aria-label', T('tplExtAria') + ': ' + tplModel.ext);
+        tplStrip.append(x);
+      }
+    }
+
+    el.tpl.addEventListener('input', () => {
+      commitTemplate(false);
+      tplModel = tplParse(el.tpl.value);
+      renderTpl();
+      renderPool();
+    });
     el.tpl.addEventListener('change', () => commitTemplate(true));
 
-    /* Yer tutucu dugmeleri: imlecin bulundugu yere yazar. Boylece kullanici
-     * sira istemeden yerlestirebiliyor, sonra textbox'ta serbestce
-     * duzenleyebiliyor (orn. {quality}yi {artist} oncesine cekmek). */
-    const chipBox = sh.getElementById('chips');
+    /* Havuz: her yer tutucu bir etiket; basinca ekler / cikarir (aria-pressed). */
     for (const ph of PLACEHOLDERS) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'chip';
+      b.dataset.key = ph.key;
       b.textContent = ph.key;
-      b.title = T(ph.title);
-      b.setAttribute('data-i18n-title', ph.title);
       b.addEventListener('click', () => {
-        const s0 = el.tpl.selectionStart == null ? el.tpl.value.length : el.tpl.selectionStart;
-        const s1 = el.tpl.selectionEnd == null ? s0 : el.tpl.selectionEnd;
-        el.tpl.value = el.tpl.value.slice(0, s0) + ph.key + el.tpl.value.slice(s1);
-        const at = s0 + ph.key.length;
-        el.tpl.focus();
-        el.tpl.setSelectionRange(at, at);
-        commitTemplate(true);
+        const had = tplModel.phs.indexOf(ph.key) >= 0;
+        tplToggle(tplModel, ph.key);
+        tplSync(true, true);
+        say(had ? 'tplRemoved' : 'tplAdded', { name: ph.key });
       });
       chipBox.appendChild(b);
     }
+    renderTpl();
+    renderPool();
 
     /* ---- kalite tavani secimi ---- */
     el.qual = sh.getElementById('qual');
@@ -3809,23 +4177,16 @@ button.icon.mini { width: 24px; }
 
     previewTemplate();
 
-    /* kaydetme kipi secicisi (FSA varsa secilebilir) */
+    /* kaydetme yontemi: iki kart (radyo). Secili olan, gercekte kullanilan
+     * yontemdir (cfg 'auto' ise tarayicinin yapabildigi). Klasor secme
+     * desteklenmiyorsa (showSaveFilePicker yok) kart kapali + sebep notu. */
     el.smode = sh.getElementById('smode');
-    el.smodeHint = sh.getElementById('smodeHint');
     function fillSmode() {
-      el.smode.textContent = '';
-      for (const [val, label] of [
-        ['auto', T('smodeAuto', { how: T(HAS_FSA ? 'smodeAutoFsa' : 'smodeAutoDl') })],
-        ...(HAS_FSA ? [['dl', T('smodeDl')]] : []),
-        ...(HAS_FSA ? [['fsa', T('smodeFsa')]] : []),
-      ]) {
-        const o = document.createElement('option');
-        o.value = val;
-        o.textContent = label;
-        el.smode.appendChild(o);
-      }
-      el.smode.value = cfg.saveMode;
-      el.smodeHint.innerHTML = th(HAS_FSA ? 'smodeHintFsaH' : 'smodeHintDlH');
+      buildChoice(el.smode, 'smode', [
+        { value: 'dl', title: T('saveDlTitle'), desc: T('saveDlDesc') },
+        { value: 'fsa', title: T('saveFsaTitle'), desc: T('saveFsaDesc'),
+          off: !HAS_FSA, note: HAS_FSA ? '' : T('saveFsaOff') },
+      ], saveMode(), (v) => { cfg.saveMode = v; saveCfg(); });
     }
     fillSmode();
 
@@ -3857,13 +4218,9 @@ button.icon.mini { width: 24px; }
     /* dil degisince secim listeleri ve ipuclari yeniden yazilir */
     el.onLang = () => {
       fillTheme(); fillQual(); fillSmode(); fillLang();
+      renderTpl(); renderPool();
       applyQualityHint();
     };
-
-    el.smode.addEventListener('change', () => {
-      cfg.saveMode = el.smode.value;
-      saveCfg();
-    });
 
     el.foldBtn.addEventListener('click', () => {
       bodyFolded = !bodyFolded;
@@ -3888,7 +4245,7 @@ button.icon.mini { width: 24px; }
     });
     el.npQ.addEventListener('click', () => {
       if (!npTrack) return;
-      addToQueue(npTrack);
+      queueAdd(npTrack);
       setBtnLabel(el.npQ, 'queueAdd', 'npQueued');
       setTimeout(() => { setBtnLabel(el.npQ, 'queueAdd', 'npQueueAdd'); }, 1400);
     });
@@ -4176,7 +4533,6 @@ button.icon.mini { width: 24px; }
   function applyLang() {
     LANG = resolveLang(cfg.lang);
     if (!host) return;
-    el.wrap.setAttribute('dir', langDir());     // RTL: yalnizca ic duzen; dock konumu ayni kalir
     el.wrap.setAttribute('lang', LANG);
     applyI18n(sh);
     if (el.onLang) el.onLang();                 // secim listeleri + ipuclari
@@ -4262,11 +4618,20 @@ button.icon.mini { width: 24px; }
 
   /* panel geneli durum (sag tik ile baslatilan indirmeler icin) */
   function setGlobal(html, cls) {
-    if (!el.gstat) return;
+    if (!el.gstat) {
+      /* Panel kapali (sag tik menusunden baslatilan islem): durum bildirimde. */
+      if (!host && html) scToast(htmlText(html), cls === 'err' ? 4200 : 1800);
+      return;
+    }
     el.gstat.innerHTML = html;
     el.gstat.className = 'gstat' + (cls ? ' ' + cls : '');
     delete el.gstat.dataset.home;   // baska bir mesaj yazildi: ana ekran ipucu degil
     delete el.gstat.dataset.paused;
+  }
+
+  function htmlText(html) {
+    try { return new DOMParser().parseFromString(String(html), 'text/html').body.textContent || ''; }
+    catch { return String(html).replace(/<[^>]*>/g, ''); }
   }
 
   /* ------------------------------------------------ eklenti koprusu (SW) */
@@ -4507,7 +4872,7 @@ el.meta.removeAttribute('data-i18n');   // artik sabit bir etiket degil
       const q = qualityOf(f);
       const facts = [];
       if (f.isrc) facts.push(`ISRC <span class="mono">${escapeHtml(f.isrc)}</span>`);
-      if (f.label) facts.push('label ' + escapeHtml(f.label));
+      if (f.label) facts.push('Label ' + escapeHtml(f.label));
       if (f.genre) facts.push(escapeHtml(f.genre));
       if (f.year) facts.push(escapeHtml(f.year));
       if (f.hires) facts.push('hi-res');
@@ -5030,7 +5395,7 @@ const secs = (performance.now() - t0) / 1000;
     closeCtxMenu();
     if (!track) return;
 
-    if (!host) { build(); }
+    /* Panel kapaliysa kurulmaz ve acilmaz; ilerleme bildirimde gorunur. */
     setGlobal('');
     download(track, trackArtist(track), null);
   }
@@ -5042,15 +5407,7 @@ const secs = (performance.now() - t0) / 1000;
     removeCtxItem();
     closeCtxMenu();
     if (!track) return;
-
-    if (!host) { build(); }
-    const eklendi = addToQueue(track);
-    renderQueue();
-    setGlobal(
-      eklendi
-        ? th('ctxAddedH', { title: track.title || '', n: queue.length })
-        : th('ctxDupH', { title: track.title || '' }),
-      eklendi ? 'ok' : 'err');
+    queueAdd(track);
   }
 
   /* Uygulama her sag tik icin birden fazla contextmenu olayi yeniden yayinlar ve
@@ -5058,10 +5415,9 @@ const secs = (performance.now() - t0) / 1000;
    yuzden track bulunamayan olaylarda HICBIR seyi silmiyoruz: gecis noktasi
    degil. Bayat dugme zararsizdir, cunku her attachCtxItem once kendini temizler. */
   document.addEventListener('contextmenu', (ev) => {
-    /* Panel kapaliyken sitenin sag tik menusune hic dokunulmaz:
-     * kullanici arac cubugu dugmesine basana kadar eklenti aksiyon almaz. */
-    if (!host) return;
-    if (host.contains(ev.target)) return;
+    /* Panel kapaliyken de menu ogeleri eklenir; ama kendiliginden HICBIR sey
+     * calismaz: yalnizca kullanici ogeye tiklayinca bir sey olur. */
+    if (host && host.contains(ev.target)) return;
     if (ev.target instanceof Element && ev.target.closest('.context-menu')) return;
     const track = trackFromNode(ev.target);
     if (!track) return;
@@ -5505,7 +5861,12 @@ const secs = (performance.now() - t0) / 1000;
   function scIsEditable(n) {
     if (!n || typeof n !== 'object') return false;
     const tag = String(n.tagName || '').toLowerCase();
-    if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+    if (tag === 'input') {
+      /* kaydirici/onay kutusu gibi yazi girmeyen girdiler kisayolu engellemez */
+      const ty = String(n.type || 'text').toLowerCase();
+      return ['range', 'checkbox', 'radio', 'button', 'submit', 'reset', 'image', 'file', 'color'].indexOf(ty) < 0;
+    }
+    if (tag === 'textarea' || tag === 'select') return true;
     if (n.isContentEditable === true) return true;
     const role = typeof n.getAttribute === 'function' ? n.getAttribute('role') : '';
     return role === 'textbox' || role === 'combobox' || role === 'searchbox';
@@ -5571,7 +5932,7 @@ const secs = (performance.now() - t0) / 1000;
     return best;
   }
 
-  function scToast(text) {
+  function scToast(text, ms) {
     if (!scToastHost) {
       scToastHost = document.createElement('div');
       scToastHost.id = 'arcod-grab-toast';
@@ -5585,12 +5946,11 @@ const secs = (performance.now() - t0) / 1000;
       scToastHost.__box = box;
     }
     scToastHost.__box.textContent = text;
-    scToastHost.__box.setAttribute('dir', langDir());   // RTL dillerde metin yonu
     if (!scToastHost.isConnected) document.documentElement.appendChild(scToastHost);
     clearTimeout(scToastTimer);
     scToastTimer = setTimeout(() => {
       if (scToastHost) scToastHost.remove();
-    }, 1300);
+    }, ms || 1300);
   }
 
   /* Eylemi uygula; gercekten bir sey yapildiysa true (preventDefault icin). */
@@ -5605,19 +5965,130 @@ const secs = (performance.now() - t0) / 1000;
       return true;
     }
     const m = scMedia();
-    if (!m) return false;
-    const yeni = scStepVolume(m.volume, id === 'volUp' ? 1 : -1);
-    try {
-      m.volume = yeni;
-      if (id === 'volUp' && m.muted && yeni > 0) m.muted = false;
-    } catch { return false; }
+    const ctl = scFindVolumeCtl(m);
+    if (!m && !ctl) return false;
+    const yeni = scStepVolume(m ? m.volume : scCtlFrac(ctl), id === 'volUp' ? 1 : -1);
+    /* Once sitenin kendi ses kaydiricisi: uygulama sesi kendi durumundan
+     * (state) geri yazdigi icin yalnizca audio.volume atamak kalici olmuyordu.
+     * Kaydirici surulunce uygulama durumunu da gunceller. Ardindan
+     * audio.volume dogrudan da ayarlanir (kaydirici yoksa tek yol budur). */
+    if (ctl) { try { scSetCtl(ctl, yeni); } catch { /* yoksay */ } }
+    if (m) {
+      try {
+        if (Math.abs(m.volume - yeni) > 0.005) m.volume = yeni;
+        if (id === 'volUp' && m.muted && yeni > 0) m.muted = false;
+      } catch { /* yoksay */ }
+    }
     scToast(T('volToast', { n: Math.round(yeni * 100) }));
     return true;
   }
 
+  /* Sitenin ses kaydiricisi: <input type=range> ya da role=slider (Radix /
+   * shadcn). Adayin ipucu metni (aria-label, test kimligi, yakin ikon sinifi)
+   * "volume/ses" icermeli ve (ses ogesi varsa) degeri audio.volume ile
+   * eslesmeli; boylece ilerleme (seek) cubugu ile karismaz. */
+  const SC_VOL_RE = /(volume|\bvol\b|sound|speaker|\bses\b)/i;
+  const SC_NOT_VOL_RE = /(seek|progress|scrub|position|duration|ilerleme)/i;
+
+  function scCtlFrac(c) {
+    if (!c) return 1;
+    if (c.tagName === 'INPUT') {
+      const lo = Number(c.min) || 0;
+      const hi = c.max === '' ? 100 : Number(c.max);
+      return hi > lo ? Math.min(1, Math.max(0, (Number(c.value) - lo) / (hi - lo))) : 1;
+    }
+    const lo = Number(c.getAttribute('aria-valuemin')) || 0;
+    const hi = c.hasAttribute('aria-valuemax') ? Number(c.getAttribute('aria-valuemax')) : 100;
+    const now = Number(c.getAttribute('aria-valuenow'));
+    return hi > lo && isFinite(now) ? Math.min(1, Math.max(0, (now - lo) / (hi - lo))) : 1;
+  }
+
+  function scFindVolumeCtl(m) {
+    let list;
+    try { list = document.querySelectorAll('input[type="range"], [role="slider"]'); } catch { return null; }
+    for (const c of list) {
+      if (host && (c === host || host.contains(c))) continue;
+      const own = [c.getAttribute('aria-label'), c.getAttribute('name'), c.id,
+        c.getAttribute('data-testid'), c.getAttribute('title')].join(' ');
+      if (SC_NOT_VOL_RE.test(own)) continue;
+      let hint = own;
+      let x = c;
+      for (let i = 0; i < 3 && x; i++, x = x.parentElement) {
+        hint += ' ' + [x.getAttribute('aria-label'), x.getAttribute('data-testid'), x.getAttribute('title')].join(' ');
+        if (i === 1) for (const s of x.querySelectorAll('svg')) hint += ' ' + String(s.getAttribute('class') || '');
+      }
+      if (!SC_VOL_RE.test(hint)) continue;
+      if (m && Math.abs(scCtlFrac(c) - m.volume) > 0.06) continue;   // ses degeriyle eslesmiyor
+      return c;
+    }
+    return null;
+  }
+
+  function scSetCtl(c, frac) {
+    if (c.tagName === 'INPUT') {
+      const lo = Number(c.min) || 0;
+      const hi = c.max === '' ? 100 : Number(c.max);
+      const step = Number(c.step);
+      let v = lo + frac * (hi - lo);
+      if (step > 0 && isFinite(step)) v = lo + Math.round((v - lo) / step) * step;
+      /* React'in izledigi deger ayarlayicisi: dogrudan c.value = ... onChange'i tetiklemez */
+      const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+      set.call(c, String(v));
+      c.dispatchEvent(new Event('input', { bubbles: true }));
+      c.dispatchEvent(new Event('change', { bubbles: true }));
+      return;
+    }
+    /* role=slider: odaklanip ok tuslariyla hedefe yaklas (adim boyutu bilinmez) */
+    const lo = Number(c.getAttribute('aria-valuemin')) || 0;
+    const hi = c.hasAttribute('aria-valuemax') ? Number(c.getAttribute('aria-valuemax')) : 100;
+    const target = lo + frac * (hi - lo);
+    const read = () => Number(c.getAttribute('aria-valuenow'));
+    const prev = document.activeElement;
+    try { c.focus({ preventScroll: true }); } catch { /* yoksay */ }
+    for (let i = 0; i < 110; i++) {
+      const cur = read();
+      if (!isFinite(cur) || Math.abs(target - cur) < (hi - lo) * 0.02) break;
+      c.dispatchEvent(new KeyboardEvent('keydown', {
+        key: target > cur ? 'ArrowRight' : 'ArrowLeft', bubbles: true, cancelable: true,
+      }));
+      if (read() === cur) break;
+    }
+    try { if (prev && prev !== c && prev.focus) prev.focus({ preventScroll: true }); } catch { /* yoksay */ }
+  }
+
+  /* Panelin (kapali golge DOM) icindeki yazi alani odakta mi? Kapali golge
+   * kokunde olay yolu disaridan gorunmez; bu yuzden kendi referansimizdan
+   * (sh.activeElement) bakariz. */
+  function panelTyping() {
+    try {
+      return !!(host && sh && document.activeElement === host && scIsEditable(sh.activeElement));
+    } catch { return false; }
+  }
+
+  /* Panelde yazarken (sablon, ayirici, secim listesi) tus olaylari window'un
+   * capture asamasinda kesilir: sayfanin document/window dinleyicilerine (ve
+   * eklentinin kendi sayfa kisayollarina) ulasmaz, boylece Bosluk oynaticiyi
+   * durdurmaz. Varsayilan eylem (karakterin yazilmasi) bundan etkilenmez; yazi
+   * alanlarimizin keydown dinleyicisi yok (input/change olaylarini kullanir).
+   * Not: eklentiden once kaydolmus bir sayfa capture dinleyicisi yine gorur. */
+  for (const type of ['keydown', 'keyup', 'keypress']) {
+    window.addEventListener(type, (ev) => { if (panelTyping()) ev.stopImmediatePropagation(); }, true);
+  }
+
+  /* Global kapsam: background.js (chrome.commands) -> relay.js -> buraya. Yalnizca
+   * kullanici panelden 'Tum tarayicida' dediyse (localStorage'dan taze okunur;
+   * baska sekmede degismis olabilir) ve eylem bilinen bir eylemse calisir. */
+  function scCommand(action) {
+    let scope = cfg.scScope;
+    try { scope = loadCfg().scScope; } catch { /* yoksay */ }
+    if (scope !== 'global') return;
+    if (!SC_ACTIONS.some((a) => a.id === action)) return;
+    scRun(action, { repeat: false });
+  }
+
   function scOnKey(ev) {
     if (scCapturing) return;                       // panel tus yakaliyor
-    if (host && ev.target === host) return;        // panelin icinde (kapali golge DOM)
+    if (panelTyping()) return;                     // panelde yaziliyor
     if (scIsEditable(ev.target) || scIsEditable(document.activeElement)) return;
     const id = scMatch(scComboOf(ev), scMap());
     if (!id) return;
@@ -5658,7 +6129,11 @@ const secs = (performance.now() - t0) / 1000;
 .sc-key.sc-empty { color: var(--label-3); font-weight: 400; }
 .sc-warn { flex: 1 0 100%; font-size: 11.5px; line-height: 1.45; color: var(--gold); }
 .sc-warn:empty { display: none; }
-.sc-foot { margin: 12px 12px 0; }
+.sc-foot { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 12px 0; }
+.sc-sub { padding: 14px 16px 6px; font-size: 11.5px; color: var(--label-2); }
+.sc-assigned { flex: 0 0 auto; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--label); }
+.sc-assigned.sc-empty { color: var(--label-3); font-weight: 400; }
+.sc-global.hide { display: none; }
 .wbtn { margin: 12px 12px 0; }
 .wnow { margin-inline-start: 8px; color: var(--label-3); font-variant-numeric: tabular-nums; }
 @container ag (max-width: 440px) { .sc-key { flex: 1 1 100%; } }
@@ -5669,11 +6144,83 @@ const secs = (performance.now() - t0) / 1000;
     group.innerHTML = `
       <div class="pgt">${escapeHtml(T('scTitle'))}</div>
       <div class="hint">${th('scHintH')}</div>
+      <div class="sc-sub" id="scScopeT">${escapeHtml(T('scScopeLabel'))}</div>
+      <div class="opts" id="scScope" role="radiogroup" aria-labelledby="scScopeT"></div>
+      <div class="sc-global" id="scGlobal">
+        <div class="hint">${th('scGlobalHelpH')}</div>
+        <div class="sc-sub">${escapeHtml(T('scCmdListTitle'))}</div>
+        <div class="sc-list" id="scCmds"></div>
+        <div class="sc-foot">
+          <button class="mini" id="scOpenChrome" type="button"><span>${escapeHtml(T('scOpenChrome'))}</span></button>
+          <button class="mini" id="scCopyAddr" type="button"><span>${escapeHtml(T('scCopyAddr'))}</span></button>
+        </div>
+        <div class="hint" id="scCopyMsg" role="status" aria-live="polite"></div>
+      </div>
       <div class="sc-list" id="scList"></div>
+      <div class="hint">${th('scPageOnlyH')}</div>
       <div class="sc-foot">
         <button class="mini" id="scReset" type="button"><span>${escapeHtml(T('scReset'))}</span></button>
       </div>`;
     const list = group.querySelector('#scList');
+
+    /* --- kapsam: sayfa | global --- */
+    const globalBox = group.querySelector('#scGlobal');
+    const cmdBox = group.querySelector('#scCmds');
+    const copyMsg = group.querySelector('#scCopyMsg');
+    const SC_CMD_NAMES = { 'arcod-prev': 'prev', 'arcod-next': 'next', 'arcod-vol-up': 'volUp', 'arcod-vol-down': 'volDown' };
+    const SC_ADDR = 'chrome://extensions/shortcuts';
+
+    async function refreshCmds() {
+      cmdBox.textContent = '';
+      const r = await bridgeCall('arcodgrab:commands');
+      const got = {};
+      if (r && r.ok && Array.isArray(r.commands)) {
+        for (const c of r.commands) if (SC_CMD_NAMES[c.name]) got[SC_CMD_NAMES[c.name]] = c.shortcut || '';
+      }
+      for (const a of SC_ACTIONS) {
+        const row = document.createElement('div');
+        row.className = 'sc-row';
+        const nm = document.createElement('span');
+        nm.className = 'sc-name';
+        nm.textContent = a.label;
+        const v = document.createElement('span');
+        v.className = 'sc-assigned' + (got[a.id] ? '' : ' sc-empty');
+        v.textContent = got[a.id] || T('scNone');
+        row.append(nm, v);
+        cmdBox.appendChild(row);
+      }
+    }
+    function applyScope() {
+      globalBox.classList.toggle('hide', cfg.scScope !== 'global');
+      if (cfg.scScope === 'global') refreshCmds();
+    }
+    buildChoice(group.querySelector('#scScope'), 'scScope', [
+      { value: 'page', title: T('scScopePage'), desc: T('scScopePageDesc') },
+      { value: 'global', title: T('scScopeGlobal'), desc: T('scScopeGlobalDesc') },
+    ], cfg.scScope, (v) => { cfg.scScope = v === 'global' ? 'global' : 'page'; saveCfg(); applyScope(); });
+
+    async function copyAddr() {
+      let ok = false;
+      try { await navigator.clipboard.writeText(SC_ADDR); ok = true; } catch { /* eski yol */ }
+      if (!ok) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = SC_ADDR;
+          group.appendChild(ta);
+          ta.select();
+          ok = document.execCommand('copy');
+          ta.remove();
+        } catch { ok = false; }
+      }
+      copyMsg.textContent = ok ? T('scCopied') : T('scCopyFail');
+    }
+    group.querySelector('#scCopyAddr').addEventListener('click', copyAddr);
+    group.querySelector('#scOpenChrome').addEventListener('click', async () => {
+      copyMsg.textContent = '';
+      const r = await bridgeCall('arcodgrab:open-shortcuts');
+      if (!r || !r.ok) copyAddr();     // chrome:// acilamadiysa adres panoya
+    });
+    applyScope();
     const rows = {};
 
     for (const a of SC_ACTIONS) {
@@ -5824,6 +6371,7 @@ const secs = (performance.now() - t0) / 1000;
     const d = e.data;
     if (!d || d.__arcodgrab !== true) return;
     if (d.type === 'toggle') { toggle(); return; }
+    if (d.type === 'command') { scCommand(d.action); return; }
     /* relay.js MAIN'den sonra yuklenir; acilista gonderilen rozet istegi
      * kaybolmus olabilir. Relay hazir olunca rozet yeniden yazilir. */
     if (d.type === 'relay-up' && host) syncQueueBadge();

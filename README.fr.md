@@ -1,6 +1,4 @@
-🇹🇷 [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · **Français** · [Español](README.es.md) · [Русский](README.ru.md) · [العربية](README.ar.md)
-
-> Les documents du dossier `docs/` n'existent qu'en turc ; les liens y mènent donc vers les versions turques.
+🇹🇷 [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · **Français** · [Español](README.es.md) · [Русский](README.ru.md)
 
 <div align="center">
 
@@ -17,7 +15,7 @@ Avant le téléchargement, il lit la **vraie** qualité du fichier : profondeur 
 [![Firefox](https://img.shields.io/badge/Firefox-128%2B%20(exp%C3%A9rimental)-FF7139?logo=firefoxbrowser&logoColor=white)](#-installation)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853)](manifest.json)
 [![Aucune dépendance](https://img.shields.io/badge/dépendances-aucune-8b5cf6)](#-architecture)
-[![Aucune télémétrie](https://img.shields.io/badge/télémétrie-aucune-0ea5e9)](docs/GIZLILIK.md)
+[![Aucune télémétrie](https://img.shields.io/badge/télémétrie-aucune-0ea5e9)](docs/fr/GIZLILIK.md)
 [![Licence : MIT](https://img.shields.io/badge/licence-MIT-yellow)](LICENSE)
 
 
@@ -60,7 +58,7 @@ Texte plus grand, contraste élevé et grandes zones tactiles pour les personnes
 - **🎵 Carte « En cours de lecture »** — surveille le lecteur en bas de page ; télécharge le morceau en cours ou l'ajoute à la file d'un clic.
 - **🗂️ Modèle de nom de fichier** — `{n}`, `{title}`, `{artist}`, `{album}`, `{quality}`, `{isrc}` et plus encore.
 - **💾 Deux modes d'enregistrement** — écriture directe sur le disque (tu choisis la destination) ou remise au gestionnaire de téléchargements du navigateur.
-- **🌍 7 langues** — Türkçe, English, Deutsch, Français, Español, Русский et العربية (de droite à gauche). Paramètres → langue ; appliqué immédiatement. → [Langues](#-langues)
+- **🌍 6 langues** — Türkçe, English, Deutsch, Français, Español, Русский. Paramètres → langue ; appliqué immédiatement. → [Langues](#-langues)
 - **🔒 Zéro dépendance** — pas de compilation, pas de serveur, pas d'analytique. Trois fichiers et un manifeste.
 
 ## 📦 Installation
@@ -87,7 +85,7 @@ Firefox 128+ est requis (pour la prise en charge de `world: "MAIN"` et du servic
 3.  Choisir le fichier manifest.json
 ```
 
-Pour l'installation permanente et le déploiement en entreprise → **[docs/KURULUM.md](docs/KURULUM.md)** (en turc)
+Pour l'installation permanente et le déploiement en entreprise → **[docs/fr/KURULUM.md](docs/fr/KURULUM.md)**
 
 ## 🚀 Utilisation
 
@@ -146,7 +144,7 @@ flowchart TD
     B -->|downloads| D
 ```
 
-Chacune des trois couches ne fait qu'une seule chose ; aucune n'étend les droits d'une autre. Détails → **[docs/MIMARI.md](docs/MIMARI.md)** (en turc)
+Chacune des trois couches ne fait qu'une seule chose ; aucune n'étend les droits d'une autre. Détails → **[docs/fr/MIMARI.md](docs/fr/MIMARI.md)**
 
 ## 🔒 Confidentialité
 
@@ -155,7 +153,7 @@ Chacune des trois couches ne fait qu'une seule chose ; aucune n'étend les droit
 - Les adresses de flux temporaires (tickets) ne servent qu'au moment du téléchargement ; elles ne sont écrites ni sur le disque ni dans les journaux.
 - Les paramètres et la file sont conservés dans `localStorage`, uniquement sur l'origine ARCOD.
 
-Texte complet → **[docs/GIZLILIK.md](docs/GIZLILIK.md)** (en turc)
+Texte complet → **[docs/fr/GIZLILIK.md](docs/fr/GIZLILIK.md)**
 
 ## ❓ FAQ
 
@@ -191,13 +189,13 @@ L'extension n'est pas signée et est distribuée hors du store ; tout le code so
 
 ## 🌍 Langues
 
-Le panneau existe en : **Türkçe** (par défaut), **English**, **Deutsch**, **Français**, **Español**, **Русский**, **العربية** (RTL). Dans **Paramètres → langue**, choisis `automatique` (langue du navigateur ; turc si elle n'est pas prise en charge) ou sélectionne-en une manuellement ; le choix est conservé et le panneau se redessine sans recharger la page. En arabe, la disposition interne passe de droite à gauche ; la position du panneau à l'écran (bord droit) et la poignée de largeur ne changent pas. Les variables du modèle de nom de fichier, les noms de touches et les termes techniques (FLAC, MD5, Hi-Res) ne sont pas traduits.
+Le panneau existe en : **Türkçe** (par défaut), **English**, **Deutsch**, **Français**, **Español**, **Русский**. Dans **Paramètres → langue**, choisis `automatique` (langue du navigateur ; turc si elle n'est pas prise en charge) ou sélectionne-en une manuellement ; le choix est conservé et le panneau se redessine sans recharger la page. Les variables du modèle de nom de fichier, les noms de touches et les termes techniques (FLAC, MD5, Hi-Res) ne sont pas traduits.
 
-Ce README existe aussi en : [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md) · [العربية](README.ar.md). Les documents de `docs/` sont uniquement en turc.
+Ce README existe aussi en : [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md).
 
 **Pour ajouter une langue**, dans `arcod-grab.js` :
 
-1. Ajoute `{ id: 'it', name: 'Italiano', dir: 'ltr' }` à la liste `LANGS` (`dir: 'rtl'` pour les langues de droite à gauche).
+1. Ajoute `{ id: 'it', name: 'Italiano', dir: 'ltr' }` à la liste `LANGS`.
 2. Copie le bloc `I18N.tr` et traduis-le sous le nom `I18N.it`. Ne touche pas aux noms de clés ; conserve tels quels les paramètres substituables comme `{n}`, `{name}` et les balises `<b>`. Une clé manquante retombe sur le turc.
 3. Rien d'autre : le sélecteur de langue est alimenté par `LANGS`, et la détection automatique regarde le préfixe de `navigator.language`.
 

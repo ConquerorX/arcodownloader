@@ -1,6 +1,4 @@
-🇹🇷 [Türkçe](README.md) · **English** · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md) · [العربية](README.ar.md)
-
-> Documents under `docs/` are available in Turkish only; links to them open the Turkish versions.
+🇹🇷 [Türkçe](README.md) · **English** · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md)
 
 <div align="center">
 
@@ -17,7 +15,7 @@ Before downloading, it reads the file's **real** quality: bit depth, sample rate
 [![Firefox](https://img.shields.io/badge/Firefox-128%2B%20(experimental)-FF7139?logo=firefoxbrowser&logoColor=white)](#-installation)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-34A853)](manifest.json)
 [![No dependencies](https://img.shields.io/badge/dependencies-none-8b5cf6)](#-architecture)
-[![No telemetry](https://img.shields.io/badge/telemetry-none-0ea5e9)](docs/GIZLILIK.md)
+[![No telemetry](https://img.shields.io/badge/telemetry-none-0ea5e9)](docs/en/GIZLILIK.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
 
 
@@ -60,7 +58,7 @@ Larger text, high contrast and big touch targets for visually impaired users. No
 - **🎵 Now playing card** — watches the player at the bottom of the page; downloads the playing track or adds it to the queue in one click.
 - **🗂️ File name template** — `{n}`, `{title}`, `{artist}`, `{album}`, `{quality}`, `{isrc}` and more.
 - **💾 Two save modes** — stream straight to disk (you pick the destination) or hand off to the browser's download manager.
-- **🌍 7 languages** — Türkçe, English, Deutsch, Français, Español, Русский and العربية (right-to-left). Settings → language; applied instantly. → [Languages](#-languages)
+- **🌍 6 languages** — Türkçe, English, Deutsch, Français, Español, Русский. Settings → language; applied instantly. → [Languages](#-languages)
 - **🔒 Zero dependencies** — no build step, no server, no analytics. Three files and a manifest.
 
 ## 📦 Installation
@@ -87,7 +85,7 @@ Requires Firefox 128+ (for `world: "MAIN"` support and the MV3 service worker).
 3.  Select the manifest.json file
 ```
 
-For permanent installation and enterprise deployment → **[docs/KURULUM.md](docs/KURULUM.md)** (Turkish)
+For permanent installation and enterprise deployment → **[docs/en/KURULUM.md](docs/en/KURULUM.md)**
 
 ## 🚀 Usage
 
@@ -146,7 +144,7 @@ flowchart TD
     B -->|downloads| D
 ```
 
-Each of the three layers does one job; none extends another's privileges. Details → **[docs/MIMARI.md](docs/MIMARI.md)** (Turkish)
+Each of the three layers does one job; none extends another's privileges. Details → **[docs/en/MIMARI.md](docs/en/MIMARI.md)**
 
 ## 🔒 Privacy
 
@@ -155,7 +153,7 @@ Each of the three layers does one job; none extends another's privileges. Detail
 - Live stream addresses (tickets) are used only at download time; they are not written to disk or logs.
 - Settings and the queue are kept in `localStorage`, on the ARCOD origin only.
 
-Full text → **[docs/GIZLILIK.md](docs/GIZLILIK.md)** (Turkish)
+Full text → **[docs/en/GIZLILIK.md](docs/en/GIZLILIK.md)**
 
 ## ❓ FAQ
 
@@ -191,13 +189,13 @@ The extension is unsigned and distributed outside the store; all the source code
 
 ## 🌍 Languages
 
-The panel comes in: **Türkçe** (default), **English**, **Deutsch**, **Français**, **Español**, **Русский**, **العربية** (RTL). Under **Settings → language** choose `auto` (browser language; Turkish if unsupported) or pick one manually; the choice is persistent and the panel redraws without a page reload. With Arabic, the inner layout flips right-to-left; the panel's position on screen (right edge) and the width handle stay the same. File name template tokens, key names and technical terms (FLAC, MD5, Hi-Res) are not translated.
+The panel comes in: **Türkçe** (default), **English**, **Deutsch**, **Français**, **Español**, **Русский**. Under **Settings → language** choose `auto` (browser language; Turkish if unsupported) or pick one manually; the choice is persistent and the panel redraws without a page reload. File name template tokens, key names and technical terms (FLAC, MD5, Hi-Res) are not translated.
 
-This README is also available in: [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md) · [العربية](README.ar.md). The documents under `docs/` are Turkish only.
+This README is also available in: [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md).
 
 **To add a new language**, in `arcod-grab.js`:
 
-1. Add `{ id: 'it', name: 'Italiano', dir: 'ltr' }` to the `LANGS` list (use `dir: 'rtl'` for right-to-left languages).
+1. Add `{ id: 'it', name: 'Italiano', dir: 'ltr' }` to the `LANGS` list.
 2. Copy the `I18N.tr` block and translate it as `I18N.it`. Don't touch the key names; keep placeholders such as `{n}`, `{name}` and `<b>` tags exactly as they are. A missing key falls back to Turkish.
 3. No other step: the language selector is fed from `LANGS`, and auto-detection looks at the `navigator.language` prefix.
 

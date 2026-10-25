@@ -132,6 +132,30 @@ if (msg.type === 'arcodgrab:queue-count') {
     return true;
   }
 
+  /* Panelin Kisayollar bolumu: Chrome'da hangi komuta hangi tus atanmis? */
+  if (msg.type === 'arcodgrab:commands') {
+    if (!MATCH.test((sender && sender.url) || '') || !chrome.commands || !chrome.commands.getAll) {
+      sendResponse({ ok: false, code: 'unknown', error: 'komutlar okunamadi' });
+      return true;
+    }
+    chrome.commands.getAll().then(
+      (list) => sendResponse({ ok: true, commands: list.map((c) => ({ name: c.name, shortcut: c.shortcut || '' })) }),
+      (err) => sendResponse({ ok: false, error: String((err && err.message) || err) }));
+    return true;
+  }
+
+  /* chrome://extensions/shortcuts sayfadan dogrudan acilamaz; eklenti acabilir. */
+  if (msg.type === 'arcodgrab:open-shortcuts') {
+    if (!MATCH.test((sender && sender.url) || '')) {
+      sendResponse({ ok: false, code: 'bad-url', error: 'beklenmeyen adres' });
+      return true;
+    }
+    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }).then(
+      () => sendResponse({ ok: true }),
+      (err) => sendResponse({ ok: false, error: String((err && err.message) || err) }));
+    return true;
+  }
+
   /* "Aci": indirmeyi isletim sisteminin varsayilan uygulamasinda ac. */
   if (msg.type === 'arcodgrab:open') {
     if (typeof a.id !== 'number') {
@@ -160,6 +184,39 @@ if (msg.type === 'arcodgrab:queue-count') {
     return true;
   }
 });
+
+/* --- Global kisayol kapsami (chrome.commands) ---
+ * manifest'teki 4 komut Chrome'un kisayol sayfasindan (chrome://extensions/shortcuts)
+ * kullanici tarafindan atanir; tus atanmadikca hicbir sey olmaz. Komut gelince
+ * acik bir ARCOD sekmesine arcodgrab:command gonderilir (relay.js -> sayfa);
+ * sayfa yalnizca kullanici panelde 'Tum tarayicida' dediyse uygular. ARCOD
+ * sekmesi yoksa sessizce yok sayilir. Ek izin gerekmez (host_permissions yeter). */
+const CMD_ACTIONS = {
+  'arcod-prev': 'prev',
+  'arcod-next': 'next',
+  'arcod-vol-up': 'volUp',
+  'arcod-vol-down': 'volDown',
+};
+
+async function pickArcodTab() {
+  let tabs = [];
+  try { tabs = await chrome.tabs.query({ url: 'https://player.arcod.xyz/*' }); } catch { return null; }
+  if (!tabs.length) return null;
+  /* sesi calan > bu pencerede etkin > en son kullanilan */
+  return tabs.find((t) => t.audible)
+    || tabs.find((t) => t.active)
+    || tabs.slice().sort((a, b) => (b.lastAccessed || 0) - (a.lastAccessed || 0))[0];
+}
+
+if (chrome.commands && chrome.commands.onCommand) {
+  chrome.commands.onCommand.addListener(async (name) => {
+    const action = CMD_ACTIONS[name];
+    if (!action) return;
+    const tab = await pickArcodTab();
+    if (!tab || typeof tab.id !== 'number') return;
+    try { await chrome.tabs.sendMessage(tab.id, { type: 'arcodgrab:command', action }); } catch { /* icerik betigi yok: yok say */ }
+  });
+}
 
 chrome.tabs.onRemoved.addListener((tabId) => {
   chrome.action.setBadgeText({ tabId, text: '' }).catch(() => {});

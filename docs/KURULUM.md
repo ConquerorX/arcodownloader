@@ -1,3 +1,5 @@
+🇹🇷 **Türkçe** · [English](en/KURULUM.md) · [Deutsch](de/KURULUM.md) · [Français](fr/KURULUM.md) · [Español](es/KURULUM.md) · [Русский](ru/KURULUM.md)
+
 # Kurulum
 
 ## Hızlı yol (kaynak klasöründen)
