@@ -1,3 +1,5 @@
+🇹🇷 **Türkçe** · [English](en/GIZLILIK.md) · [Deutsch](de/GIZLILIK.md) · [Français](fr/GIZLILIK.md) · [Español](es/GIZLILIK.md) · [Русский](ru/GIZLILIK.md)
+
 # Gizlilik
 
 **Özet: ARCOD Grab hiçbir veri toplamaz, hiçbir sunucuya hiçbir şey göndermez.**

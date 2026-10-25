@@ -1,3 +1,5 @@
+🇹🇷 **Türkçe** · [English](en/MIMARI.md) · [Deutsch](de/MIMARI.md) · [Français](fr/MIMARI.md) · [Español](es/MIMARI.md) · [Русский](ru/MIMARI.md)
+
 # Mimari
 
 Eklenti bilerek üç küçük katmandan oluşur. Her katman tek bir iş yapar ve diğerinin yetkisini genişletmez.
@@ -41,6 +43,10 @@ Görevleri:
 - Kalite, dosya adı şablonu ve kuyruğu `localStorage`'da tutmak (ARCOD origin'i).
 - İndirmeyi ya doğrudan diske akıtmak (`showSaveFilePicker`) ya da `background.js`'e devretmek.
 
+### 1b. `media-hook.js` — MAIN world, document_start
+
+Sitenin oluşturduğu ses elemanlarını (`new Audio` dahil) ve Web Audio çıkışını (ana `GainNode`) pasif olarak kaydeder; yalnızca ses okuma/ayarlama için dar bir `CustomEvent` el sıkışmasıyla `arcod-grab.js`'e açılır. Panel kapalıyken de hiçbir otomatik aksiyon almaz.
+
 ### 2. `relay.js` — ISOLATED world
 
 MAIN world `chrome.*` API'lerine erişemez, service worker da sayfaya doğrudan yazamaz. `relay.js` bu iki taraf arasındaki **tek ve dar kanaldır**:
@@ -72,6 +78,9 @@ Yalnızca beyaz listedeki `arcodgrab:*` mesaj türleri iletilir; sayfadaki herha
 | `arcodgrab:open` | sayfa → background | İndirileni işletim sisteminde aç |
 | `arcodgrab:show` | sayfa → background | İndirmeyi listede göster |
 | `arcodgrab:show-folder` | sayfa → background | İndirilenler klasörünü aç |
+| `arcodgrab:commands` | sayfa → background | Atanmış `commands` tuşlarını listeler |
+| `arcodgrab:open-shortcuts` | sayfa → background | Tarayıcının kısayol ayar sekmesini açar |
+| `arcodgrab:command` | background → sayfa | Atanmış bir komutu sayfaya iletir (`prev`, `next`, `volUp`, `volDown`) |
 
 ## İndirme akışı
 
@@ -113,6 +122,19 @@ Sonuç üç durumdan biri olarak raporlanır: **orijinal**, **yeniden paketlenmi
 
 Panel Apple HIG dilini izler: semantik renk jetonları (açık/koyu otomatik), `backdrop-filter` materyal yüzeyler, 0.5 px ayırıcılar, 8 pt ızgara. Kolay Mod, `prefers-contrast: more` ile ilk açılışta kendiliğinden devreye girer.
 
+## Kısayollar ve girdi
+
+- **Kısayol akışı:** manifestteki `commands` (`arcod-prev`, `arcod-next`, `arcod-vol-up`, `arcod-vol-down`) varsayılan tuş içermez; `chrome://extensions/shortcuts` sayfasından atanır. `background.js` `onCommand` olayını alır ve hedef sekmeyi şu öncelikle seçer: ses çalan, etkin, en son kullanılan. ARCOD sekmesi yoksa sessiz kalır. Komut `relay.js` üzerinden `arcodgrab:command` olarak (beyaz liste: `prev`, `next`, `volUp`, `volDown`) MAIN world'e `type: 'command'` mesajıyla iner ve `scCommand` işler. Yeni izin gerekmez.
+- **Kapsam:** `cfg.scScope` `'page'` (varsayılan) ya da `'global'` olur. Global kapsamda yalnızca `commands` tuşları çalışır; panelde atanan özel tuşlar yalnızca sayfada geçerlidir.
+- **Klavye yalıtımı:** panelde yazarken tuşlar (Space dahil) sayfaya sızmaz; sayfa kısayolları panelde yazarken tetiklenmez.
+- **Sağ tık menüsü** panel kapalıyken de etkindir; kendiliğinden aksiyon yapmaz, paneli kurmaz, durumu toast ile gösterir. Kuyruğa ekleme tek `queueAdd()` yolundan geçer.
+- **Dosya adı şablonu** blok (chip) editörüyle sürükle-bırak düzenlenir; `cfg.template` string olarak kalır, `tplParse`/`tplBuild` dönüştürür. Kayıt yöntemi `cfg.saveMode`: `'dl'` | `'fsa'` | `'auto'`; kuyruk her zaman tarayıcı indirmesiyle iner.
+- **Ses:** önce site ses kaydırıcısı denenir, olmazsa `audio.volume` kullanılır.
+
+## Diller
+
+Kullanıcıya görünen bütün metinler `arcod-grab.js` içindeki tek `I18N` sözlüğünde durur (`tr`, `en`, `de`, `fr`, `es`, `ru`). `t('anahtar', { n })` okur; eksik anahtar önce Türkçeye, o da yoksa anahtarın kendisine düşer. Statik düğümler `data-i18n*` öznitelikleriyle işaretlenir, dil değişince `applyI18n()` hepsini sayfa yenilemeden yeniden yazar. `background.js` hata metni yerine kararlı bir `code` döndürür; çeviri panelde yapılır. `T()` ilk harfi dile duyarlı büyütür. Ekleme adımları: [README → Diller](../README.md#-diller).
+
 ## Neden tek dosya?
 
-`arcod-grab.js` panel, CSS ve indirme motorunu tek bir IIFE içinde tutar. MAIN world'e enjekte edilen betiklerde modül yükleme yoktur ve her ek dosya sayfa başına ek bir istek olur. Bu yüzden bilinçli bir tercih: **tek betik, sıfır bağımlılık, sıfır derleme.**
+`arcod-grab.js` panel, CSS ve indirme motorunu tek bir IIFE içinde tutar. MAIN world'e enjekte edilen betiklerde modül yükleme yoktur ve her ek dosya sayfa başına ek bir istek olur. Bu yüzden bilinçli bir tercih: **tek betik, sıfır bağımlılık, sıfır derleme.** `arcod-grab.js` hâlâ tek ana betiktir; `media-hook.js` sayfanın kendi betiklerinden önce yüklenmesi gerektiği için ayrı durur.

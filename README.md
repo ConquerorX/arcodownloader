@@ -1,3 +1,5 @@
+🇹🇷 **Türkçe** · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md)
+
 <div align="center">
 
 <img src="assets/banner.svg" alt="ARCOD Grab — player.arcod.xyz için sayfa içi FLAC ve MP3 indirme paneli" width="100%"/>
@@ -56,6 +58,7 @@ Görme engelliler için daha büyük yazı, yüksek kontrast ve geniş dokunma h
 - **🎵 Şu an çalıyor kartı** — sayfanın altındaki oynatıcıyı izler; çalan parçayı tek tuşla indirir veya kuyruğa ekler.
 - **🗂️ Dosya adı şablonu** — `{n}`, `{title}`, `{artist}`, `{album}`, `{quality}`, `{isrc}` ve daha fazlası.
 - **💾 İki kayıt yolu** — doğrudan diske akıt (hedefi sen seç) veya tarayıcının indirme yöneticisine bırak.
+- **🌍 6 dil** — Türkçe, English, Deutsch, Français, Español, Русский. Ayarlar → dil; anında uygulanır. → [Diller](#-diller)
 - **🔒 Sıfır bağımlılık** — derleme adımı yok, sunucu yok, analitik yok. Üç dosya ve bir manifest.
 
 ## 📦 Kurulum
@@ -184,12 +187,26 @@ Bu, işletim sisteminin dosya sistemiyle ilgilidir; şablonu `{artist} - {title}
 Eklenti imzasız ve mağaza dışı dağıtılıyor; kaynak kodun tamamı bu depoda. İstersen kendin paketleyip mağazaya yükleyebilirsin.
 </details>
 
+## 🌍 Diller
+
+Panel şu dillerde gelir: **Türkçe** (varsayılan), **English**, **Deutsch**, **Français**, **Español**, **Русский**. **Ayarlar → dil** bölümünde `otomatik` (tarayıcı dili; desteklenmiyorsa Türkçe) ya da elle seçim yapılır; seçim kalıcıdır ve panel sayfa yenilenmeden yeniden çizilir. Dosya adı şablon değişkenleri, tuş adları ve teknik terimler (FLAC, MD5, Hi-Res) çevrilmez.
+
+Bu README şu dillerde de var: [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md).
+
+**Yeni dil eklemek** için `arcod-grab.js` içinde:
+
+1. `LANGS` listesine `{ id: 'it', name: 'Italiano', dir: 'ltr' }` ekle.
+2. `I18N.tr` bloğunu kopyalayıp `I18N.it` olarak çevir. Anahtar adlarına dokunma; `{n}`, `{name}` gibi yer tutucuları ve `<b>` etiketlerini aynen koru. Eksik anahtar Türkçeye düşer.
+3. Başka bir adım yok: dil seçicisi `LANGS`'tan beslenir, otomatik algılama `navigator.language` ön ekine bakar.
+
+Çeviri yazarken her dilin aynı anahtar ve yer tutucu kümesine sahip olduğunu kendi betiğinle doğrulaman önerilir; ardından `node --check arcod-grab.js`.
+
 ## 🛠️ Katkı
 
 Hata bildirimi ve öneriler için **Issues** bölümünü kullan. Katkı göndermeden önce:
 
 ```bash
-node --check arcod-grab.js && node --check background.js && node --check relay.js
+node --check arcod-grab.js && node --check media-hook.js && node --check background.js && node --check relay.js
 ```
 
 Değişikliklerini `v1.0.1` gibi bir etiketle sürüm notlarına ekle → [CHANGELOG.md](CHANGELOG.md)

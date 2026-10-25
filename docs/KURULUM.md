@@ -1,3 +1,5 @@
+🇹🇷 **Türkçe** · [English](en/KURULUM.md) · [Deutsch](de/KURULUM.md) · [Français](fr/KURULUM.md) · [Español](es/KURULUM.md) · [Русский](ru/KURULUM.md)
+
 # Kurulum
 
 ## Hızlı yol (kaynak klasöründen)
@@ -41,7 +43,7 @@ about:debugging#/runtime/this-firefox  ▸  Geçici Eklenti Yükle  ▸  manifes
 
 ```bash
 # depo kökünde
-zip -r ../arcodownloader.xpi manifest.json background.js arcod-grab.js relay.js \
+zip -r ../arcodownloader.xpi manifest.json background.js arcod-grab.js media-hook.js relay.js \
           icon16.png icon32.png icon48.png icon128.png
 ```
 

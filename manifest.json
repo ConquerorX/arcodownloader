@@ -19,6 +19,12 @@
   "background": {
     "service_worker": "background.js"
   },
+  "commands": {
+    "arcod-prev": { "description": "Önceki parça (ARCOD)" },
+    "arcod-next": { "description": "Sonraki parça (ARCOD)" },
+    "arcod-vol-up": { "description": "Sesi artır (ARCOD)" },
+    "arcod-vol-down": { "description": "Sesi kıs (ARCOD)" }
+  },
   "action": {
     "default_title": "ARCOD Grab — paneli aç/kapat",
     "default_icon": {
@@ -27,6 +33,12 @@
     }
   },
   "content_scripts": [
+    {
+      "matches": ["https://player.arcod.xyz/*"],
+      "js": ["media-hook.js"],
+      "world": "MAIN",
+      "run_at": "document_start"
+    },
     {
       "matches": ["https://player.arcod.xyz/*"],
       "js": ["arcod-grab.js"],

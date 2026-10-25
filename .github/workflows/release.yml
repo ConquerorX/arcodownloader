@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p dist
           zip -q "dist/arcodownloader-${GITHUB_REF_NAME}.zip" \
-            manifest.json background.js arcod-grab.js relay.js \
+            manifest.json background.js arcod-grab.js media-hook.js relay.js \
             icon16.png icon32.png icon48.png icon128.png
           unzip -l "dist/arcodownloader-${GITHUB_REF_NAME}.zip"
 
