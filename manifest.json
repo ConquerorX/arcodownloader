@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ARCOD Grab",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "player.arcod.xyz'den tek parça ya da albüm FLAC indirir, başlığı doğrular. — Emre Dural tarafından yapıldı.",
   "minimum_chrome_version": "111",
   "icons": {
