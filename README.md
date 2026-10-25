@@ -1,3 +1,7 @@
+🇹🇷 **Türkçe** · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md) · [العربية](README.ar.md)
+
+> `docs/` altındaki belgeler yalnızca Türkçedir; diğer dillerdeki README'ler de bu belgelere bağlanır.
+
 <div align="center">
 
 <img src="assets/banner.svg" alt="ARCOD Grab — player.arcod.xyz için sayfa içi FLAC ve MP3 indirme paneli" width="100%"/>
@@ -188,6 +192,8 @@ Eklenti imzasız ve mağaza dışı dağıtılıyor; kaynak kodun tamamı bu dep
 ## 🌍 Diller
 
 Panel şu dillerde gelir: **Türkçe** (varsayılan), **English**, **Deutsch**, **Français**, **Español**, **Русский**, **العربية** (RTL). **Ayarlar → dil** bölümünde `otomatik` (tarayıcı dili; desteklenmiyorsa Türkçe) ya da elle seçim yapılır; seçim kalıcıdır ve panel sayfa yenilenmeden yeniden çizilir. Arapça seçilince iç düzen sağdan sola döner; panelin ekrandaki konumu (sağ kenar) ve genişlik tutamacı değişmez. Dosya adı şablon değişkenleri, tuş adları ve teknik terimler (FLAC, MD5, Hi-Res) çevrilmez.
+
+Bu README şu dillerde de var: [Türkçe](README.md) · [English](README.en.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Русский](README.ru.md) · [العربية](README.ar.md). `docs/` altındaki belgeler yalnızca Türkçedir.
 
 **Yeni dil eklemek** için `arcod-grab.js` içinde:
 
