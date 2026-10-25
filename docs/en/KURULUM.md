@@ -43,7 +43,7 @@ A `Temporary` install is removed when the browser closes. A permanent install ne
 
 ```bash
 # at the repository root
-zip -r ../arcodownloader.xpi manifest.json background.js arcod-grab.js relay.js \
+zip -r ../arcodownloader.xpi manifest.json background.js arcod-grab.js media-hook.js relay.js \
           icon16.png icon32.png icon48.png icon128.png
 ```
 

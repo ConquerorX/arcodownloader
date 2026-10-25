@@ -206,7 +206,7 @@ ARCOD отклоняет часть запросов в зависимости �
 Об ошибках и предложениях сообщайте в разделе **Issues**. Перед отправкой вклада:
 
 ```bash
-node --check arcod-grab.js && node --check background.js && node --check relay.js
+node --check arcod-grab.js && node --check media-hook.js && node --check background.js && node --check relay.js
 ```
 
 Добавьте свои изменения в примечания к выпуску с тегом вида `v1.0.1` → [CHANGELOG.md](CHANGELOG.md)

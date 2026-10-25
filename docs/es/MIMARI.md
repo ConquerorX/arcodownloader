@@ -43,6 +43,10 @@ Tareas:
 - Guardar la calidad, la plantilla de nombre de archivo y la cola en `localStorage` (origen de ARCOD).
 - Volcar la descarga en flujo directamente al disco (`showSaveFilePicker`) o delegarla en `background.js`.
 
+### 1b. `media-hook.js` — MAIN world, document_start
+
+Registra de forma pasiva los elementos de audio que crea el sitio (incluido `new Audio`) y la salida de Web Audio (el `GainNode` principal); solo se expone a `arcod-grab.js` mediante un handshake estrecho de `CustomEvent` para leer/ajustar el volumen. No realiza ninguna acción automática, ni siquiera con el panel cerrado.
+
 ### 2. `relay.js` — ISOLATED world
 
 El MAIN world no puede acceder a las API `chrome.*`, y el service worker no puede escribir directamente en la página. `relay.js` es el **único y estrecho canal** entre ambos lados:
@@ -133,4 +137,4 @@ Todos los textos visibles para el usuario están en un único diccionario `I18N`
 
 ## ¿Por qué un solo archivo?
 
-`arcod-grab.js` mantiene el panel, el CSS y el motor de descarga en una única IIFE. Los scripts inyectados en el MAIN world no tienen carga de módulos, y cada archivo adicional sería una petición extra por página. Por eso es una elección deliberada: **un script, cero dependencias, cero compilación.**
+`arcod-grab.js` mantiene el panel, el CSS y el motor de descarga en una única IIFE. Los scripts inyectados en el MAIN world no tienen carga de módulos, y cada archivo adicional sería una petición extra por página. Por eso es una elección deliberada: **un script, cero dependencias, cero compilación.** `arcod-grab.js` sigue siendo el único script principal; `media-hook.js` va aparte solo porque debe cargarse antes que los scripts de la página.

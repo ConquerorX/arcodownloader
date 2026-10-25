@@ -22,7 +22,7 @@ jobs:
 
       - name: Betikleri denetle
         run: |
-          for f in arcod-grab.js background.js relay.js; do
+          for f in arcod-grab.js media-hook.js background.js relay.js; do
             node --check "$f"
             echo "ok: $f"
           done

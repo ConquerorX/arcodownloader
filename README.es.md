@@ -206,7 +206,7 @@ Al escribir una traducción se recomienda comprobar con tu propio script que tod
 Usa la sección **Issues** para informar de errores y hacer sugerencias. Antes de enviar una contribución:
 
 ```bash
-node --check arcod-grab.js && node --check background.js && node --check relay.js
+node --check arcod-grab.js && node --check media-hook.js && node --check background.js && node --check relay.js
 ```
 
 Añade tus cambios a las notas de versión con una etiqueta como `v1.0.1` → [CHANGELOG.md](CHANGELOG.md)

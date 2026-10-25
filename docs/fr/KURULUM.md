@@ -43,7 +43,7 @@ Une installation `temporaire` est supprimée à la fermeture du navigateur. Une 
 
 ```bash
 # à la racine du dépôt
-zip -r ../arcodownloader.xpi manifest.json background.js arcod-grab.js relay.js \
+zip -r ../arcodownloader.xpi manifest.json background.js arcod-grab.js media-hook.js relay.js \
           icon16.png icon32.png icon48.png icon128.png
 ```
 

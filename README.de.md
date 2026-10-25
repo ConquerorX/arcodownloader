@@ -206,7 +206,7 @@ Beim Übersetzen wird empfohlen, mit einem eigenen Skript zu prüfen, dass alle 
 Für Fehlerberichte und Vorschläge nutze den Bereich **Issues**. Bevor du einen Beitrag einreichst:
 
 ```bash
-node --check arcod-grab.js && node --check background.js && node --check relay.js
+node --check arcod-grab.js && node --check media-hook.js && node --check background.js && node --check relay.js
 ```
 
 Trage deine Änderungen mit einem Tag wie `v1.0.1` in die Versionshinweise ein → [CHANGELOG.md](CHANGELOG.md)

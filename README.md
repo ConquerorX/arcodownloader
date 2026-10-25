@@ -206,7 +206,7 @@ Bu README şu dillerde de var: [Türkçe](README.md) · [English](README.en.md) 
 Hata bildirimi ve öneriler için **Issues** bölümünü kullan. Katkı göndermeden önce:
 
 ```bash
-node --check arcod-grab.js && node --check background.js && node --check relay.js
+node --check arcod-grab.js && node --check media-hook.js && node --check background.js && node --check relay.js
 ```
 
 Değişikliklerini `v1.0.1` gibi bir etiketle sürüm notlarına ekle → [CHANGELOG.md](CHANGELOG.md)

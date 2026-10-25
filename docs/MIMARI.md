@@ -43,6 +43,10 @@ Görevleri:
 - Kalite, dosya adı şablonu ve kuyruğu `localStorage`'da tutmak (ARCOD origin'i).
 - İndirmeyi ya doğrudan diske akıtmak (`showSaveFilePicker`) ya da `background.js`'e devretmek.
 
+### 1b. `media-hook.js` — MAIN world, document_start
+
+Sitenin oluşturduğu ses elemanlarını (`new Audio` dahil) ve Web Audio çıkışını (ana `GainNode`) pasif olarak kaydeder; yalnızca ses okuma/ayarlama için dar bir `CustomEvent` el sıkışmasıyla `arcod-grab.js`'e açılır. Panel kapalıyken de hiçbir otomatik aksiyon almaz.
+
 ### 2. `relay.js` — ISOLATED world
 
 MAIN world `chrome.*` API'lerine erişemez, service worker da sayfaya doğrudan yazamaz. `relay.js` bu iki taraf arasındaki **tek ve dar kanaldır**:
@@ -133,4 +137,4 @@ Kullanıcıya görünen bütün metinler `arcod-grab.js` içindeki tek `I18N` s�
 
 ## Neden tek dosya?
 
-`arcod-grab.js` panel, CSS ve indirme motorunu tek bir IIFE içinde tutar. MAIN world'e enjekte edilen betiklerde modül yükleme yoktur ve her ek dosya sayfa başına ek bir istek olur. Bu yüzden bilinçli bir tercih: **tek betik, sıfır bağımlılık, sıfır derleme.**
+`arcod-grab.js` panel, CSS ve indirme motorunu tek bir IIFE içinde tutar. MAIN world'e enjekte edilen betiklerde modül yükleme yoktur ve her ek dosya sayfa başına ek bir istek olur. Bu yüzden bilinçli bir tercih: **tek betik, sıfır bağımlılık, sıfır derleme.** `arcod-grab.js` hâlâ tek ana betiktir; `media-hook.js` sayfanın kendi betiklerinden önce yüklenmesi gerektiği için ayrı durur.

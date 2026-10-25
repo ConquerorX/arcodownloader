@@ -206,7 +206,7 @@ When writing a translation, it is recommended to check with your own script that
 Use the **Issues** section for bug reports and suggestions. Before sending a contribution:
 
 ```bash
-node --check arcod-grab.js && node --check background.js && node --check relay.js
+node --check arcod-grab.js && node --check media-hook.js && node --check background.js && node --check relay.js
 ```
 
 Add your changes to the release notes with a tag like `v1.0.1` → [CHANGELOG.md](CHANGELOG.md)

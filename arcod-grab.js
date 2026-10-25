@@ -5895,12 +5895,46 @@ const secs = (performance.now() - t0) / 1000;
 
   /* Sayfanin ses ogesi: calan > kaynagi olan > ilk. */
   function scMedia() {
-    let list;
-    try { list = Array.from(document.querySelectorAll('audio, video')); } catch { return null; }
+    let list = [];
+    try { list = Array.from(document.querySelectorAll('audio, video')); } catch { /* yoksay */ }
+    /* media-hook.js kaydi: DOM'a eklenmemis (new Audio()) ogeler de gelir */
+    const hk = scHook();
+    if (hk) {
+      try { for (const m of hk.elements()) if (list.indexOf(m) < 0) list.push(m); } catch { /* yoksay */ }
+    }
     if (!list.length) return null;
-    return list.find((m) => !m.paused && !m.ended)
-      || list.find((m) => m.currentSrc || m.src)
-      || list[0];
+    /* Web Audio'ya alinmis oge (createMediaElementSource) icin .volume etkisiz;
+     * o yuzden once yonlendirilmemis ogeler tercih edilir. */
+    const dir = hk ? list.filter((m) => { try { return !hk.isRouted(m); } catch { return true; } }) : list;
+    const pool = dir.length ? dir : list;
+    return pool.find((m) => !m.paused && !m.ended)
+      || pool.find((m) => m.currentSrc || m.src)
+      || pool[0];
+  }
+
+  /* media-hook.js ile tek seferlik el sikisma (ilk talep eden alir). Kanca yoksa
+   * (ornegin sayfa yuklenmeden once calismadiysa) null; sonraki cagrilarda
+   * yeniden denenmez ama basarisizlik kalici sayilmaz. */
+  let scHookApi = null;
+  let scHookTried = false;
+  function scHook() {
+    if (scHookApi) return scHookApi;
+    if (scHookTried) return null;
+    scHookTried = true;
+    try {
+      window.dispatchEvent(new CustomEvent('__arcodgrab:media', { detail: { cb: (a) => { scHookApi = a; } } }));
+    } catch { /* yoksay */ }
+    return scHookApi;
+  }
+  /* Ana gain (Web Audio) var mi, varsa degeri */
+  function scMasterVol() {
+    const hk = scHook();
+    if (!hk) return null;
+    try { return hk.liveMasters().length ? hk.getMaster() : null; } catch { return null; }
+  }
+  function scIsRouted(m) {
+    const hk = scHook();
+    try { return !!(hk && m && hk.isRouted(m)); } catch { return false; }
   }
 
   /* Oynatici dugmesi: aria-label / title / data-testid / ikon sinifi (lucide
@@ -5964,19 +5998,27 @@ const secs = (performance.now() - t0) / 1000;
       }
       return true;
     }
+    /* Tek mantiksal ses degeri. Kaynak onceligi (gecerli deger buradan okunur):
+     * 1) Web Audio'ya alinmamis ses ogesi (.volume), 2) Web Audio ana gain,
+     * 3) sitenin kaydiricisi. Yeni deger ayni anda her mevcut yola uygulanir;
+     * Web Audio'ya alinmis ogeye .volume yazilmaz (cift uygulama olmasin). */
     const m = scMedia();
-    const ctl = scFindVolumeCtl(m);
-    if (!m && !ctl) return false;
-    const yeni = scStepVolume(m ? m.volume : scCtlFrac(ctl), id === 'volUp' ? 1 : -1);
+    const mDirect = m && !scIsRouted(m) ? m : null;
+    const mg = scMasterVol();
+    const ctl = scFindVolumeCtl(mDirect);
+    if (!mDirect && mg === null && !ctl) return false;
+    const cur = mDirect ? mDirect.volume : (mg !== null ? mg : scCtlFrac(ctl));
+    const yeni = scStepVolume(cur, id === 'volUp' ? 1 : -1);
+    if (mg !== null) { try { scHook().setMaster(yeni); } catch { /* yoksay */ } }
     /* Once sitenin kendi ses kaydiricisi: uygulama sesi kendi durumundan
      * (state) geri yazdigi icin yalnizca audio.volume atamak kalici olmuyordu.
      * Kaydirici surulunce uygulama durumunu da gunceller. Ardindan
      * audio.volume dogrudan da ayarlanir (kaydirici yoksa tek yol budur). */
     if (ctl) { try { scSetCtl(ctl, yeni); } catch { /* yoksay */ } }
-    if (m) {
+    if (mDirect) {
       try {
-        if (Math.abs(m.volume - yeni) > 0.005) m.volume = yeni;
-        if (id === 'volUp' && m.muted && yeni > 0) m.muted = false;
+        if (Math.abs(mDirect.volume - yeni) > 0.005) mDirect.volume = yeni;
+        if (id === 'volUp' && mDirect.muted && yeni > 0) mDirect.muted = false;
       } catch { /* yoksay */ }
     }
     scToast(T('volToast', { n: Math.round(yeni * 100) }));
