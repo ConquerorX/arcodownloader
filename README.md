@@ -56,6 +56,7 @@ Görme engelliler için daha büyük yazı, yüksek kontrast ve geniş dokunma h
 - **🎵 Şu an çalıyor kartı** — sayfanın altındaki oynatıcıyı izler; çalan parçayı tek tuşla indirir veya kuyruğa ekler.
 - **🗂️ Dosya adı şablonu** — `{n}`, `{title}`, `{artist}`, `{album}`, `{quality}`, `{isrc}` ve daha fazlası.
 - **💾 İki kayıt yolu** — doğrudan diske akıt (hedefi sen seç) veya tarayıcının indirme yöneticisine bırak.
+- **🌍 7 dil** — Türkçe, English, Deutsch, Français, Español, Русский ve العربية (sağdan sola). Ayarlar → dil; anında uygulanır. → [Diller](#-diller)
 - **🔒 Sıfır bağımlılık** — derleme adımı yok, sunucu yok, analitik yok. Üç dosya ve bir manifest.
 
 ## 📦 Kurulum
@@ -183,6 +184,18 @@ Bu, işletim sisteminin dosya sistemiyle ilgilidir; şablonu `{artist} - {title}
 
 Eklenti imzasız ve mağaza dışı dağıtılıyor; kaynak kodun tamamı bu depoda. İstersen kendin paketleyip mağazaya yükleyebilirsin.
 </details>
+
+## 🌍 Diller
+
+Panel şu dillerde gelir: **Türkçe** (varsayılan), **English**, **Deutsch**, **Français**, **Español**, **Русский**, **العربية** (RTL). **Ayarlar → dil** bölümünde `otomatik` (tarayıcı dili; desteklenmiyorsa Türkçe) ya da elle seçim yapılır; seçim kalıcıdır ve panel sayfa yenilenmeden yeniden çizilir. Arapça seçilince iç düzen sağdan sola döner; panelin ekrandaki konumu (sağ kenar) ve genişlik tutamacı değişmez. Dosya adı şablon değişkenleri, tuş adları ve teknik terimler (FLAC, MD5, Hi-Res) çevrilmez.
+
+**Yeni dil eklemek** için `arcod-grab.js` içinde:
+
+1. `LANGS` listesine `{ id: 'it', name: 'Italiano', dir: 'ltr' }` ekle (sağdan sola diller için `dir: 'rtl'`).
+2. `I18N.tr` bloğunu kopyalayıp `I18N.it` olarak çevir. Anahtar adlarına dokunma; `{n}`, `{name}` gibi yer tutucuları ve `<b>` etiketlerini aynen koru. Eksik anahtar Türkçeye düşer.
+3. Başka bir adım yok: dil seçicisi `LANGS`'tan beslenir, otomatik algılama `navigator.language` ön ekine bakar.
+
+Çeviri yazarken her dilin aynı anahtar ve yer tutucu kümesine sahip olduğunu kendi betiğinle doğrulaman önerilir; ardından `node --check arcod-grab.js`.
 
 ## 🛠️ Katkı
 

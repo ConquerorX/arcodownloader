@@ -113,6 +113,10 @@ Sonuç üç durumdan biri olarak raporlanır: **orijinal**, **yeniden paketlenmi
 
 Panel Apple HIG dilini izler: semantik renk jetonları (açık/koyu otomatik), `backdrop-filter` materyal yüzeyler, 0.5 px ayırıcılar, 8 pt ızgara. Kolay Mod, `prefers-contrast: more` ile ilk açılışta kendiliğinden devreye girer.
 
+## Diller
+
+Kullanıcıya görünen bütün metinler `arcod-grab.js` içindeki tek `I18N` sözlüğünde durur (`tr`, `en`, `de`, `fr`, `es`, `ru`, `ar`). `t('anahtar', { n })` okur; eksik anahtar önce Türkçeye, o da yoksa anahtarın kendisine düşer. Statik düğümler `data-i18n*` öznitelikleriyle işaretlenir, dil değişince `applyI18n()` hepsini sayfa yenilemeden yeniden yazar. Arapçada `.wrap[dir="rtl"]` yalnızca iç düzeni aynalar; panel ekranın sağında sabit kalır ve genişlik tutamacı gerçek ekran koordinatlarıyla çalışır. `background.js` hata metni yerine kararlı bir `code` döndürür; çeviri panelde yapılır. Ekleme adımları: [README → Diller](../README.md#-diller).
+
 ## Neden tek dosya?
 
 `arcod-grab.js` panel, CSS ve indirme motorunu tek bir IIFE içinde tutar. MAIN world'e enjekte edilen betiklerde modül yükleme yoktur ve her ek dosya sayfa başına ek bir istek olur. Bu yüzden bilinçli bir tercih: **tek betik, sıfır bağımlılık, sıfır derleme.**

@@ -26,6 +26,11 @@ window.addEventListener('message', (e) => {
   }
 });
 
+/* relay.js, arcod-grab.js'den SONRA yuklenir; panel acilista gonderdigi rozet
+ * istegi kaybolmus olabilir. "Hazirim" diyerek MAIN world'e rozeti yeniden
+ * yazdirir (veri tasimaz, yalnizca bildirim). */
+window.postMessage({ [TAG]: true, type: 'relay-up' }, '*');
+
 chrome.runtime.onMessage.addListener((msg) => {
   if (!msg || msg.type !== 'arcodgrab:toggle') return;
   window.postMessage({ [TAG]: true, type: 'toggle' }, '*');

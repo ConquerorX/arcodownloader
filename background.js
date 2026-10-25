@@ -26,6 +26,9 @@ chrome.action.onClicked.addListener(async (tab) => {
   }
 });
 
+/* Kullaniciya giden hata metinleri paneldedir (arcod-grab.js, I18N): burada
+ * yalnizca kararlı bir 'code' (bad-url | bad-id | unknown) doner; 'error' TR
+ * yedek metindir. Tarayicinin kendi hata mesaji (lastError) oldugu gibi gecer. */
 /* Chrome'un downloads API'si geri cagirmayi (callback) kullanir ve
  * cagrildiginda undefined doner; Firefox'un browser.downloads API'si ise
  * promise doner. Ikisini de destekleyen tek sarmalayici.
@@ -51,7 +54,10 @@ function callApi(fn) {
         }
       } catch { /* yok */ }
       if (err || le) {
-        resolve({ ok: false, error: String((le && le.message) || (err && err.message) || err || 'bilinmeyen hata') });
+        const msg = (le && le.message) || (err && err.message) || err;
+        resolve(msg
+          ? { ok: false, error: String(msg) }
+          : { ok: false, code: 'unknown', error: 'bilinmeyen hata' });
       } else {
         resolve({ ok: true, id: val });
       }
@@ -60,7 +66,10 @@ function callApi(fn) {
     function fail(e) {                 // her zaman iki arguman: node hatasi
       if (settled) return;
       settled = true;
-      resolve({ ok: false, error: String((e && e.message) || e || 'bilinmeyen hata') });
+      const msg = (e && e.message) || e;
+      resolve(msg
+        ? { ok: false, error: String(msg) }
+        : { ok: false, code: 'unknown', error: 'bilinmeyen hata' });
     }
 
     try {
@@ -86,6 +95,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return;
   }
 
+  /* panel kapandi: rozeti temizle (kullanici dugmeye tekrar basana kadar sessiz) */
+  if (msg.type === 'arcodgrab:panel-closed') {
+    const tabId = sender.tab && sender.tab.id;
+    if (typeof tabId !== 'number') return;
+    chrome.action.setBadgeText({ tabId, text: '' }).catch(() => {});
+    return;
+  }
+
   /* --- indirme sirasi sayaci: rozet "3" gosterir, sira bosken "ON" kalir --- */
 if (msg.type === 'arcodgrab:queue-count') {
   const tabId = sender.tab && sender.tab.id;
@@ -103,7 +120,7 @@ if (msg.type === 'arcodgrab:queue-count') {
    * Firefox'ta File System Access API olmadigi icin bu tek yoldur. --- */
   if (msg.type === 'arcodgrab:download') {
     if (!/^https:\/\/player\.arcod\.xyz\//.test(a.url || '')) {
-      sendResponse({ ok: false, error: 'beklenmeyen adres' });
+      sendResponse({ ok: false, code: 'bad-url', error: 'beklenmeyen adres' });
       return true;
     }
     callApi((cb) => api.downloads.download({
@@ -118,7 +135,7 @@ if (msg.type === 'arcodgrab:queue-count') {
   /* "Aci": indirmeyi isletim sisteminin varsayilan uygulamasinda ac. */
   if (msg.type === 'arcodgrab:open') {
     if (typeof a.id !== 'number') {
-      sendResponse({ ok: false, error: 'geçersiz indirme kimliği' });
+      sendResponse({ ok: false, code: 'bad-id', error: 'geçersiz indirme kimliği' });
       return true;
     }
     callApi((cb) => api.downloads.open(a.id, cb)).then(sendResponse);
@@ -128,7 +145,7 @@ if (msg.type === 'arcodgrab:queue-count') {
   /* Indirmeler sayfasini ac; orada "Klasorde goster" dugmesi var. */
   if (msg.type === 'arcodgrab:show') {
     if (typeof a.id !== 'number') {
-      sendResponse({ ok: false, error: 'geçersiz indirme kimliği' });
+      sendResponse({ ok: false, code: 'bad-id', error: 'geçersiz indirme kimliği' });
       return true;
     }
     callApi((cb) => api.downloads.show(a.id, cb)).then(sendResponse);
